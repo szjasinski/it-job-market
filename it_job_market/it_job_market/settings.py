@@ -14,7 +14,7 @@ NEWSPIDER_MODULE = "it_job_market.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = "."
+USER_AGENT = 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -62,9 +62,12 @@ DOWNLOAD_DELAY = 0.5
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "it_job_market.pipelines.ItJobMarketPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "it_job_market.pipelines.CleanPricePipeline": 100,
+    "it_job_market.pipelines.WhitespacesPipeline": 50,
+    "it_job_market.pipelines.WithPricePipeline": 10,
+    "it_job_market.pipelines.ToMonthlyPipeline": 200,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
