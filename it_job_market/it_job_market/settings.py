@@ -67,6 +67,7 @@ ITEM_PIPELINES = {
     "it_job_market.pipelines.WhitespacesPipeline": 50,
     "it_job_market.pipelines.WithPricePipeline": 10,
     "it_job_market.pipelines.ToMonthlyPipeline": 200,
+    "it_job_market.pipelines.CleanContractPipeline": 300,
     "it_job_market.pipelines.SqlitePipeline": 900,
 }
 
