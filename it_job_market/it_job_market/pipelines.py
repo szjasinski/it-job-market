@@ -67,6 +67,41 @@ class ToMonthlyPipeline:
         return item
 
 
+class CleanContractPipeline:
+
+    def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+
+        b2b_contracts = ["B2B contract", "kontrakt B2B"]
+        employment_contracts = ["contract of employment", "umowa o pracę", ]
+        mandate_contracts = ["umowa zlecenie"]
+
+        item_contract_data = str(adapter.get("contract_type"))
+        item_contracts = item_contract_data.split(", ")
+
+        contract_string = ''
+
+        for c in item_contracts:
+            if c in b2b_contracts:
+                if len(contract_string) == 0:
+                    contract_string = 'B2B'
+                else:
+                    contract_string += ', B2B'
+            elif c in employment_contracts:
+                if len(contract_string) == 0:
+                    contract_string = 'employment'
+                else:
+                    contract_string += ', employment'
+            elif c in mandate_contracts:
+                if len(contract_string) == 0:
+                    contract_string = 'mandate'
+                else:
+                    contract_string += ', mandate'
+
+        adapter['contract_type'] = contract_string
+        return item
+
+
 class SqlitePipeline:
 
     def __init__(self):
@@ -81,8 +116,8 @@ class SqlitePipeline:
         CREATE TABLE IF NOT EXISTS offers(
             job_title TEXT,
             employer TEXT,
-            price_from TEXT,
-            price_to TEXT,
+            price_from INT,
+            price_to INT,
             price_unit TEXT,
             url TEXT,
             contract_type TEXT
