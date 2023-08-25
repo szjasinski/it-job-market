@@ -140,14 +140,17 @@ class SqlitePipeline:
             price_to INT,
             price_unit TEXT,
             url TEXT,
-            contract_type TEXT
+            contract_type TEXT,
+            address TEXT,
+            city TEXT,
+            expiration_date TEXT
         )
         """)
 
     def process_item(self, item, spider):
         # Define insert statement
         self.cur.execute("""INSERT INTO offers (job_title, employer, price_from, price_to, price_unit, url, 
-        contract_type) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+        contract_type, address, city, expiration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                          (
                              item['job_title'],
                              item['employer'],
@@ -155,7 +158,10 @@ class SqlitePipeline:
                              item['price_to'],
                              item['price_unit'],
                              item['url'],
-                             item['contract_type']
+                             item['contract_type'],
+                             item["address"],
+                             item["city"],
+                             item["expiration_date"]
 
                          ))
 
