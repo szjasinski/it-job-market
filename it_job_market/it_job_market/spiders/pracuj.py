@@ -26,7 +26,12 @@ class PracujSpider(CrawlSpider):
         item["price_to"] = response.xpath('//span[@data-test="text-earningAmountValueTo"]/text()').get()
         item["price_unit"] = response.xpath('//span[@data-test="text-earningAmountUnit"]/text()').get()
         item["contract_type"] = response.xpath('//div[@data-test="sections-benefit-contracts-text"]/text()').get()
-
+        item["address"] = response.xpath('//div[@data-scroll-id="workplaces"]/div/a/text()').get()
+        item["city"] = response.xpath('//div[@data-scroll-id="workplaces"]/div/div[@data-test="text-benefit"]/text()').get()
+        item["expiration_date"] = response.xpath('//div[@data-scroll-id="publication-dates"]/div/div[2]/text()').get()
         item["url"] = response.url
+
+        # doesnt work -> logo is loaded after a short delay
+        # logo_url = response.xpath('//img[@data-test="section-company-logo"]/@src').get()
 
         return item

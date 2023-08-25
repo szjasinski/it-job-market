@@ -15,3 +15,8 @@ class ItJobMarketItem(scrapy.Item):
     price_unit = scrapy.Field()
     url = scrapy.Field()
     contract_type = scrapy.Field()
+    address = scrapy.Field()
+    city = scrapy.Field()
+    expiration_date = scrapy.Field()
+    logo_url = scrapy.Field()
+
