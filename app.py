@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import sqlite3
 from datetime import datetime
+from geopy import Nominatim
+import geopandas
 
 
 @st.cache_data
@@ -27,6 +29,34 @@ clickable_job_titles = [f'<a target="_blank" href="{link}">{title}</a>'
 df['job_title'] = clickable_job_titles
 df.drop(['url', 'price_unit'], axis=1, inplace=True)
 
+
+# GEOLOCAITON _______
+
+@st.cache_data
+def create_coordinates():
+    locator = Nominatim(user_agent='myGeocoder')
+    # location = locator.geocode('Champ de Mars, Paris, France')
+    location = locator.geocode('Mokotowska 1, Śródmieście, Warszawa')
+
+    from geopy.extra.rate_limiter import RateLimiter
+
+    # 1 - conveneint function to delay between geocoding calls
+    geocode = RateLimiter(locator.geocode, min_delay_seconds=1)
+    # 2- - create location column
+    df['location'] = df['address'].apply(geocode)
+    # 3 - create longitude, latitude and altitude from location column (returns tuple)
+    df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else None)
+    # 4 - split point column into latitude, longitude and altitude columns
+    df[['latitude', 'longitude', 'altitude']] = pd.DataFrame(df['point'].tolist(), index=df.index)
+
+    print('Latitude = {}, Longitude = {}'.format(location.latitude, location.longitude))
+
+    return df
+
+
+df = create_coordinates()
+# ___________________
+
 st.sidebar.title("Options")
 selected_sort_by = st.sidebar.selectbox('Sort by:', ['Price From', 'Price To'])
 selected_is_descending = st.sidebar.checkbox('Descending')
@@ -42,7 +72,8 @@ selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)
 clicked_reset_button = st.sidebar.button('Reset options (to do)')
 offers_num = len(df)
 
-st.sidebar.write("TO DO: oop app, ...")
+st.sidebar.write("TO DO: oop app, geo data, icons, data source column, sourcing data from nofluffjobs, rocketjobs, "
+                 "justjoinit...")
 
 
 # sort dataframe values
@@ -115,7 +146,13 @@ st.subheader('Percentages of offers with given contract type')
 
 st.subheader('Most popular cities')
 
+to_map_df = df[['latitude', 'longitude']].dropna()
+
+st.map(to_map_df)
+
 st.subheader('Descriptive statistics of prices')
 
 
 st.write("Data last updated (read from sql db):", timestamp)
+
+st.caption('Additional info')
