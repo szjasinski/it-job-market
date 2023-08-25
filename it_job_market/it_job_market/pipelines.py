@@ -102,6 +102,26 @@ class CleanContractPipeline:
         return item
 
 
+class CleanDatePipeline:
+
+    def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+        val = str(adapter.get('expiration_date'))
+        date_to_clean = val.replace("do: ", '').replace("until: ", '')
+
+        month_dict = {'sty': '01', 'lut': '02', 'mar': '03', 'kwi': '04', 'maj': '05', 'cze': '06',
+                      'lip': '07', 'sie': '08', 'wrz': '09', 'paź': '10', 'lis': '11', 'gru': '12',
+                      'jan': '01', 'feb': '02', 'MAR': '03', 'apr': '04', 'may': '05', 'jun': '06',
+                      'jul': '07', 'aug': '08', 'sep': '09', 'oct': '10', 'nov': '11', 'dec': '12',
+                      }
+        date_parts = date_to_clean.split()
+        new_format_month = month_dict[date_parts[1].lower()]
+        date_parts[1] = new_format_month
+        adapter['expiration_date'] = "-".join(date_parts)
+
+        return item
+
+
 class SqlitePipeline:
 
     def __init__(self):
@@ -136,10 +156,9 @@ class SqlitePipeline:
                              item['price_unit'],
                              item['url'],
                              item['contract_type']
-                             
+
                          ))
 
         # Execute insert of data into database
         self.con.commit()
         return item
-
