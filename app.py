@@ -38,11 +38,34 @@ def make_links_and_clean(main_df):
     return df
 
 
+def create_days_to_expirations(main_df):
+    df = main_df.copy()
+
+    def get_days(x):
+        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
+        delta = datetime_object - datetime.now().date()
+        return int(delta.days)
+
+    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
+    df.drop(['expiration_date'], axis=1, inplace=True)
+    return df
+
+
+def create_middle_price(main_df):
+    df = main_df.copy()
+
+    df['middle_price'] = (df['price_to'] + df['price_from']) / 2
+    return df
+
+
+
 df, timestamp = get_data_and_time()
 offers_num = len(df)
 
 df = (df.pipe(create_coordinates)
       .pipe(make_links_and_clean)
+      .pipe(create_days_to_expirations)
+      .pipe(create_middle_price)
       )
 
 
@@ -143,9 +166,10 @@ df = (df.pipe(sort_df)
 
 
 table = df.copy()
+table.drop(['latitude', 'longitude'], axis=1, inplace=True)
 table.rename(
     columns={'job_title': 'Job Title', 'employer': 'Employer', 'price_from': 'Price From', 'price_to': 'Price To',
-             'contract_type': 'Contract Type'}, inplace=True)
+             'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
 visible_offers_num = len(table)
 
 # DISPLAY ON MAIN PAGE
@@ -174,6 +198,15 @@ to_map_df = df[['latitude', 'longitude']].dropna()
 st.map(to_map_df)
 
 st.subheader('Descriptive statistics of prices')
+st.write(df['middle_price'].describe())
+
+st.subheader('Top 5 employers by mean middle price')
+mean_middle_price_by_employer = df[['middle_price', 'employer']].groupby('employer').mean()
+st.write(mean_middle_price_by_employer.nlargest(5, 'middle_price'))
+
+st.subheader('Days to expiration')
+st.bar_chart(df['days_to_expiration'])
+
 
 st.write("Data last updated (read from sql db):", timestamp)
 
