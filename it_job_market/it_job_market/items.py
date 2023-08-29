@@ -19,4 +19,5 @@ class ItJobMarketItem(scrapy.Item):
     city = scrapy.Field()
     expiration_date = scrapy.Field()
     logo_url = scrapy.Field()
+    source = scrapy.Field()
 
