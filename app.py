@@ -5,6 +5,8 @@ import sqlite3
 from datetime import datetime
 from geopy import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 @st.cache_data
@@ -76,7 +78,6 @@ selected_is_descending = st.sidebar.checkbox('Descending')
 selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
 selected_company_name_keywords = st.sidebar.text_input('Company name contains: (lowercase dont work)')
 selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
-selected_show_company_logo = st.sidebar.checkbox('Show company logos (to do)')
 
 min_salary = df['price_from'].min()
 max_salary = df['price_to'].max()
@@ -84,8 +85,10 @@ selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)
                                           min_salary, max_salary, (min_salary, max_salary))
 clicked_reset_button = st.sidebar.button('Reset options (to do)')
 
-st.sidebar.write("TO DO: oop app, geo data, icons, data source column, sourcing data from nofluffjobs, rocketjobs, "
-                 "justjoinit, get second type of address from pracuj.pl, days to expiration, schedule, deploy...")
+st.sidebar.write("TO DO: oop app, geo data, data source column, sourcing data from nofluffjobs, rocketjobs, "
+                 "justjoinit, days to expiration, seaborn plots, schedule, PDF report generation, export report "
+                 "button, show plots and statistics buttton,"
+                 "deploy...")
 
 
 # -------------------------------
@@ -149,8 +152,6 @@ def filter_salary_range(main_df):
     return df
 
 
-# show or dont show company logos
-
 # reset options after button click
 if clicked_reset_button:
     pass
@@ -179,35 +180,72 @@ st.write(table.to_html(escape=False, index=False), unsafe_allow_html=True)
 
 
 # PLOTS AND STATS
-# histogram
-st.subheader('Number of offers in salary brackets')
-hist_values = np.histogram(df['price_to'], bins=10, range=(0, 50000))[0]
-st.bar_chart(hist_values)
 
-st.subheader('Top 5 employers with the most offers')
-emp = table[['Employer', 'Job Title']].groupby(['Employer']).count().nlargest(5, 'Job Title')
-emp.rename(columns={'Job Title': 'Count'}, inplace=True)
-st.write(emp)
+def plot_middle_price_histogram():
+    fig = plt.figure(figsize=(12, 5))
+    sns.histplot(data=df["middle_price"], kde=True, bins=14, binrange=(0,70000))
+    st.pyplot(fig)
 
-st.subheader('Percentages of offers with given contract type')
 
-st.subheader('Most popular cities')
+def plot_days_to_expiration_histogram():
+    fig = plt.figure(figsize=(12, 5))
+    sns.histplot(data=df["days_to_expiration"], kde=True, bins=20, binrange=(0,100))
+    st.pyplot(fig)
 
-to_map_df = df[['latitude', 'longitude']].dropna()
 
-st.map(to_map_df)
+def plot_map():
+    to_map_df = df[['latitude', 'longitude']].dropna()
+    st.map(to_map_df, color="#009d00", size=15000, zoom=5)
+
+
+def write_employers_with_most_offers_df():
+    emp = table[['Employer', 'Job Title']].groupby(['Employer']).count().nlargest(5, 'Job Title')
+    emp.rename(columns={'Job Title': 'Count'}, inplace=True)
+    st.write(emp)
+
+
+def write_top_employers_by_middle_price_df():
+    mean_middle_price_by_employer = df[['middle_price', 'employer']].groupby('employer', as_index=False).mean()
+    mean_middle_price_by_employer = mean_middle_price_by_employer.reindex(columns=['middle_price', 'employer'])
+    mean_middle_price_by_employer.round(1)
+    st.write(mean_middle_price_by_employer.nlargest(5, 'middle_price'))
+
+    # TO CORRECT
+
+
+def plot_pie_chart():
+    fig = plt.figure(figsize=(12, 5))
+    data = df[['contract_type', 'employer']].groupby('contract_type', as_index=False).count()
+    palette_color = sns.color_palette('deep')
+    plt.pie(data['employer'], labels=data['contract_type'], colors=palette_color, autopct='%.0f%%')
+    st.pyplot(fig)
+
 
 st.subheader('Descriptive statistics of prices')
-st.write(df['middle_price'].describe())
+st.write("Median middle price:", int(df[['middle_price']].median()))
 
-st.subheader('Top 5 employers by mean middle price')
-mean_middle_price_by_employer = df[['middle_price', 'employer']].groupby('employer').mean()
-st.write(mean_middle_price_by_employer.nlargest(5, 'middle_price'))
+st.subheader('Number of offers in salary brackets')
+plot_middle_price_histogram()
 
 st.subheader('Days to expiration')
-st.bar_chart(df['days_to_expiration'])
+plot_days_to_expiration_histogram()
 
+st.subheader('Most popular cities')
+plot_map()
+
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader('Top 5 employers with the most offers')
+    write_employers_with_most_offers_df()
+
+with col2:
+    st.subheader('Top 5 employers by mean middle price')
+    write_top_employers_by_middle_price_df()
+
+st.subheader('Percentages of offers with given contract type')
+plot_pie_chart()
 
 st.write("Data last updated (read from sql db):", timestamp)
-
 st.caption('Additional info')
