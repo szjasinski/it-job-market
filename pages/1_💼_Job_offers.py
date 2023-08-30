@@ -13,14 +13,12 @@ def get_data_and_time():
     return df, datetime.now()
 
 
-def make_links_and_clean(main_df):
+def make_clickable_job_title(main_df):
     df = main_df.copy()
     clickable_job_titles = [f'<a target="_blank" href="{link}">{title}</a>'
                             for link, title in zip(df['url'], df['job_title'])]
 
-    df['job_title'] = clickable_job_titles
-    df.drop(['url', 'price_unit'], axis=1, inplace=True)
-    df.drop(['address', 'city'], axis=1, inplace=True)
+    df['clickable_job_title'] = clickable_job_titles
     return df
 
 
@@ -37,11 +35,18 @@ def create_days_to_expirations(main_df):
     return df
 
 
+@st.cache_data
+def convert_df_to_csv(df):
+    """ Function needed for downloading CSV file """
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df_to_export.to_csv().encode('utf-8')
+
+
 df, timestamp = get_data_and_time()
 offers_num = len(df)
 
 
-df = (df.pipe(make_links_and_clean)
+df = (df.pipe(make_clickable_job_title)
       .pipe(create_days_to_expirations)
       )
 
@@ -59,6 +64,14 @@ max_salary = df['price_to'].max()
 selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)',
                                           min_salary, max_salary, (min_salary, max_salary))
 clicked_reset_button = st.sidebar.button('Reset options (to do)')
+
+df_to_export = df.drop(['clickable_job_title'], axis=1)
+st.sidebar.download_button(
+    label="Download data as CSV",
+    data=convert_df_to_csv(df_to_export),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
 
 
 # -------------------------------
@@ -135,11 +148,16 @@ df = (df.pipe(sort_df)
       .pipe(filter_salary_range)
       )
 
+df.drop(['price_unit', 'url', 'job_title'], axis=1, inplace=True)
+df.drop(['address', 'city'], axis=1, inplace=True)
 
+
+df = df.reindex(columns=['clickable_job_title', 'employer', 'price_from', 'price_to', 'contract_type', 'days_to_expiration'])
 table = df.copy()
 table.rename(
-    columns={'job_title': 'Job Title', 'employer': 'Employer', 'price_from': 'Price From', 'price_to': 'Price To',
+    columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'price_from': 'Price From', 'price_to': 'Price To',
              'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
+
 visible_offers_num = len(table)
 
 # DISPLAY ON MAIN PAGE
