@@ -53,23 +53,24 @@ df = (df.pipe(make_clickable_job_title)
 
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")
+
+min_salary = df['price_from'].min()
+max_salary = df['price_to'].max()
+selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)',
+                                          min_salary, max_salary, (min_salary, max_salary))
+
 selected_sort_by = st.sidebar.selectbox('Sort by:', ['Price From', 'Price To'])
 selected_is_descending = st.sidebar.checkbox('Descending')
 selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
 selected_company_name_keywords = st.sidebar.text_input('Company name contains: (lowercase dont work)')
 selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
 
-min_salary = df['price_from'].min()
-max_salary = df['price_to'].max()
-selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)',
-                                          min_salary, max_salary, (min_salary, max_salary))
-clicked_reset_button = st.sidebar.button('Reset options (to do)')
 
 df_to_export = df.drop(['clickable_job_title'], axis=1)
 st.sidebar.download_button(
-    label="Download data as CSV",
+    label="Download all data as CSV",
     data=convert_df_to_csv(df_to_export),
-    file_name='large_df.csv',
+    file_name='it_job_market_data.csv',
     mime='text/csv',
 )
 
@@ -133,11 +134,6 @@ def filter_salary_range(main_df):
     df = df.loc[(df['price_from'] >= selected_salary_range[0]) &
                 (df['price_to'] <= selected_salary_range[1]),]
     return df
-
-
-# reset options after button click
-if clicked_reset_button:
-    pass
 
 
 # APPLYING OPTIONS SELECTED BY USER
