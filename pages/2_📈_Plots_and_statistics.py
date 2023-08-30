@@ -178,28 +178,29 @@ def plot_pie_chart():
 st.subheader('Descriptive statistics of prices')
 st.write("Median middle price:", int(df[['middle_price']].median()))
 
-st.subheader('Number of offers in salary brackets')
-plot_middle_price_histogram()
-
-st.subheader('Days to expiration')
-plot_days_to_expiration_histogram()
-
-st.subheader('Most popular cities')
-plot_map()
-
 
 col1, col2 = st.columns(2)
 
 with col1:
+    st.subheader('Number of offers in salary brackets')
+    plot_middle_price_histogram()
+
     st.subheader('Top 5 employers with the most offers')
     write_employers_with_most_offers_df()
 
+    st.subheader('Most popular cities')
+    plot_map()
+
 with col2:
+    st.subheader('Days to expiration')
+    plot_days_to_expiration_histogram()
+
     st.subheader('Top 5 employers by mean middle price')
     write_top_employers_by_middle_price_df()
 
-st.subheader('Percentages of offers with given contract type')
-plot_pie_chart()
+    st.subheader('Percentages of offers with given contract type')
+    plot_pie_chart()
+
 
 st.write("Data last updated (read from sql db):", timestamp)
 st.caption('Additional info')
