@@ -45,5 +45,5 @@ st.markdown(
 
 st.write("TO DO: oop app, geo data, data source column, sourcing data from nofluffjobs, rocketjobs, "
                  "justjoinit, days to expiration, seaborn plots, schedule, PDF report generation, export report "
-                 "button, show plots and statistics buttton,"
-                 "deploy...")
+                 "button, show plots and statistics buttton, plot of the most popular words in job offer"
+                 "export pdf report (images), deploy...")
