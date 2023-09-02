@@ -152,11 +152,20 @@ def write_employers_with_most_offers_df():
     st.write(emp)
 
 
+def write_offers_with_the_highest_max_salary_df():
+    output_df = df[['job_title', 'price_to']].nlargest(5, 'price_to')
+    # emp.rename(columns={'Job Title': 'Count'}, inplace=True)
+    output_df = output_df.set_index('job_title')
+    st.write(output_df)
+
+
 def write_top_employers_by_middle_price_df():
     mean_middle_price_by_employer = df[['middle_price', 'employer']].groupby('employer', as_index=False).mean()
-    mean_middle_price_by_employer = mean_middle_price_by_employer.reindex(columns=['middle_price', 'employer'])
+    output_df = mean_middle_price_by_employer.reindex(columns=['middle_price', 'employer'])
     mean_middle_price_by_employer.round(1)
-    st.write(mean_middle_price_by_employer.nlargest(5, 'middle_price'))
+    output_df = output_df.nlargest(5, 'middle_price')
+    output_df['middle_price'] = output_df['middle_price'].apply(lambda x: round(x, 0))
+    st.write(output_df.set_index('middle_price'))
 
     # TO CORRECT
 
@@ -176,8 +185,11 @@ st.write("Median middle price:", int(df[['middle_price']].median()))
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader('Number of offers in salary brackets')
+    st.subheader('Salary histogram')
     plot_middle_price_histogram()
+
+    st.subheader('Top 5 job titles with the highest max salary')
+    write_offers_with_the_highest_max_salary_df()
 
     st.subheader('Top 5 employers with the most offers')
     write_employers_with_most_offers_df()
