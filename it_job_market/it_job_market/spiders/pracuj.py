@@ -2,6 +2,7 @@ import scrapy
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from it_job_market.items import ItJobMarketItem
+from datetime import datetime
 
 
 # CLASS FOR SCRAPING PRACUJ.PL JOB OFFERS
@@ -23,14 +24,15 @@ class PracujSpider(CrawlSpider):
         item = ItJobMarketItem()
         item["job_title"] = response.xpath('//h1[@data-scroll-id="job-title"]/text()').get()
         item["employer"] = response.xpath('//h2[@data-scroll-id="employer-name"]/text()').get()
-        item["price_from"] = response.xpath('//span[@data-test="text-earningAmountValueFrom"]/text()').get()
-        item["price_to"] = response.xpath('//span[@data-test="text-earningAmountValueTo"]/text()').get()
+        item["min_salary"] = response.xpath('//span[@data-test="text-earningAmountValueFrom"]/text()').get()
+        item["max_salary"] = response.xpath('//span[@data-test="text-earningAmountValueTo"]/text()').get()
         item["price_unit"] = response.xpath('//span[@data-test="text-earningAmountUnit"]/text()').get()
         item["contract_type"] = response.xpath('//div[@data-test="sections-benefit-contracts-text"]/text()').get()
         item["city"] = response.xpath('//div[@data-scroll-id="workplaces"]/div/div[@data-test="text-benefit"]/text()').get()
         item["expiration_date"] = response.xpath('//div[@data-scroll-id="publication-dates"]/div/div[2]/text()').get()
         item["url"] = response.url
         item["source"] = "pracuj.pl"
+        item["scraping_datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         direct_address = response.xpath('//div[@data-scroll-id="workplaces"]/div/a/text()').get()
         if direct_address:

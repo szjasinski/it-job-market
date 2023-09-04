@@ -44,7 +44,7 @@ def create_days_to_expirations(main_df):
 def create_middle_price(main_df):
     df = main_df.copy()
 
-    df['middle_price'] = (df['price_to'] + df['price_from']) / 2
+    df['middle_price'] = (df['min_salary'] + df['max_salary']) / 2
     return df
 
 
@@ -80,17 +80,17 @@ def write_employers_with_most_offers_df(main_df):
 
 def write_offers_with_the_highest_max_salary_df(main_df):
     df = main_df.copy()
-    output_df = df[['job_title', 'price_to']].nlargest(5, 'price_to')
+    output_df = df[['job_title', 'max_salary']].nlargest(5, 'max_salary')
     # emp.rename(columns={'Job Title': 'Count'}, inplace=True)
-    output_df = output_df.set_index('price_to')
+    output_df = output_df.set_index('max_salary')
     st.write(output_df)
 
 
 def write_offers_with_the_lowest_min_salary_df(main_df):
     df = main_df.copy()
-    output_df = df[['job_title', 'price_from']].nsmallest(5, 'price_from')
+    output_df = df[['job_title', 'min_salary']].nsmallest(5, 'min_salary')
     # emp.rename(columns={'Job Title': 'Count'}, inplace=True)
-    output_df = output_df.set_index('price_from')
+    output_df = output_df.set_index('min_salary')
     st.write(output_df)
 
 
@@ -131,7 +131,7 @@ def load_plots(main_df):
         st.subheader('Top 5 employers with the most offers')
         write_employers_with_most_offers_df(df)
 
-        st.subheader('Most popular cities for companies\' headquarters ')
+        st.subheader('Most popular cities for company headquarter ')
         plot_map(df)
 
     with col2:
@@ -141,7 +141,7 @@ def load_plots(main_df):
         st.subheader('Top 5 job titles with the lowest min salary')
         write_offers_with_the_lowest_min_salary_df(df)
 
-        st.subheader('Top 5 employers by mean middle price')
+        st.subheader('Top 5 employers by average salary')
         write_top_employers_by_middle_price_df(df)
 
         st.subheader('Percentages of offers with given contract type')
@@ -165,10 +165,12 @@ st.sidebar.button("Export as pdf (to do)")
 
 
 # -------- MAIN PAGE --------
+st.title('Plots and data summaries')
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
+st.write("Average salary is calculated for each job offer as an average of max and min salary")
+st.write("Median of average salary:", int(df[['middle_price']].median()))
+st.write("Standard deviation of average salary:", int(df[['middle_price']].std()))
 
-st.subheader('Descriptive statistics of prices')
-st.write("Median average salary:", int(df[['middle_price']].median()))
 
 load_plots(df)
 st.write("Data last updated (read from sql db):", timestamp)

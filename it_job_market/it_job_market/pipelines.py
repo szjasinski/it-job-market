@@ -24,7 +24,7 @@ class CleanPricePipeline:
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        for field in ["price_from", "price_to"]:
+        for field in ["min_salary", "max_salary"]:
             val = str(adapter.get(field))
             adapter[field] = val.replace('\xa0', '').replace(',00', '')
         return item
@@ -35,7 +35,7 @@ class WithPricePipeline:
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        if adapter.get("price_from") and adapter.get("price_to"):
+        if adapter.get("min_salary") and adapter.get("max_salary"):
             return item
         else:
             raise DropItem(f"Missing price data in {item}")
@@ -57,8 +57,8 @@ class ToMonthlyPipeline:
                          "netto (+ VAT) / mies.", ]
 
         if adapter.get("price_unit") in hourly_units:
-            adapter["price_from"] = int(adapter.get("price_from")) * 160
-            adapter["price_to"] = int(adapter.get("price_to")) * 160
+            adapter["min_salary"] = int(adapter.get("min_salary")) * 160
+            adapter["max_salary"] = int(adapter.get("max_salary")) * 160
             adapter["price_unit"] = "gross / mth."
 
         if adapter.get("price_unit") in monthly_units:
@@ -136,32 +136,34 @@ class SqlitePipeline:
         CREATE TABLE IF NOT EXISTS offers(
             job_title TEXT,
             employer TEXT,
-            price_from INT,
-            price_to INT,
+            min_salary INT,
+            max_salary INT,
             price_unit TEXT,
             url TEXT,
             contract_type TEXT,
             address TEXT,
             city TEXT,
-            expiration_date TEXT
+            expiration_date TEXT,
+            scraping_datetime TEXT
         )
         """)
 
     def process_item(self, item, spider):
         # Define insert statement
-        self.cur.execute("""INSERT INTO offers (job_title, employer, price_from, price_to, price_unit, url, 
-        contract_type, address, city, expiration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        self.cur.execute("""INSERT INTO offers (job_title, employer, min_salary, max_salary, price_unit, url, 
+        contract_type, address, city, expiration_date, scraping_datetime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                          (
                              item['job_title'],
                              item['employer'],
-                             item['price_from'],
-                             item['price_to'],
+                             item['min_salary'],
+                             item['max_salary'],
                              item['price_unit'],
                              item['url'],
                              item['contract_type'],
                              item["address"],
                              item["city"],
-                             item["expiration_date"]
+                             item["expiration_date"],
+                             item["scraping_datetime"]
 
                          ))
 

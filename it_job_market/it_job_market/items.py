@@ -10,8 +10,8 @@ class ItJobMarketItem(scrapy.Item):
 
     job_title = scrapy.Field()
     employer = scrapy.Field()
-    price_from = scrapy.Field()
-    price_to = scrapy.Field()
+    min_salary = scrapy.Field()
+    max_salary = scrapy.Field()
     price_unit = scrapy.Field()
     url = scrapy.Field()
     contract_type = scrapy.Field()
@@ -20,4 +20,5 @@ class ItJobMarketItem(scrapy.Item):
     expiration_date = scrapy.Field()
     logo_url = scrapy.Field()
     source = scrapy.Field()
+    scraping_datetime = scrapy.Field()
 

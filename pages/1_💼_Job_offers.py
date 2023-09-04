@@ -54,12 +54,12 @@ df = (df.pipe(make_clickable_job_title)
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")
 
-min_salary = df['price_from'].min()
-max_salary = df['price_to'].max()
+min_salary = df['min_salary'].min()
+max_salary = df['max_salary'].max()
 selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)',
                                           min_salary, max_salary, (min_salary, max_salary))
 
-selected_sort_by = st.sidebar.selectbox('Sort by:', ['Price From', 'Price To'])
+selected_sort_by = st.sidebar.selectbox('Sort by:', ['Min Salary', 'Max Salary'])
 selected_is_descending = st.sidebar.checkbox('Descending')
 selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
 selected_company_name_keywords = st.sidebar.text_input('Company name contains: (lowercase dont work)')
@@ -68,7 +68,7 @@ selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "
 
 df_to_export = df.drop(['clickable_job_title'], axis=1)
 st.sidebar.download_button(
-    label="Download all data as CSV",
+    label="Download raw data as CSV",
     data=convert_df_to_csv(df_to_export),
     file_name='it_job_market_data.csv',
     mime='text/csv',
@@ -81,14 +81,14 @@ st.sidebar.download_button(
 # sort dataframe values
 def sort_df(main_df):
     df = main_df.copy()
-    if selected_sort_by == 'Price To' and selected_is_descending:
-        df = df.sort_values(by=['price_to'], ascending=False)
-    elif selected_sort_by == 'Price From' and selected_is_descending:
-        df = df.sort_values(by=['price_from'], ascending=False)
-    elif selected_sort_by == 'Price To':
-        df = df.sort_values(by=['price_to'])
-    elif selected_sort_by == 'Price From':
-        df = df.sort_values(by=['price_from'])
+    if selected_sort_by == 'Max Salary' and selected_is_descending:
+        df = df.sort_values(by=['max_salary'], ascending=False)
+    elif selected_sort_by == 'Min Salary' and selected_is_descending:
+        df = df.sort_values(by=['min_salary'], ascending=False)
+    elif selected_sort_by == 'Max Salary':
+        df = df.sort_values(by=['max_salary'])
+    elif selected_sort_by == 'Min Salary':
+        df = df.sort_values(by=['min_salary'])
     return df
 
 
@@ -131,8 +131,8 @@ def filter_contract_type(main_df):
 # filter df for salary range
 def filter_salary_range(main_df):
     df = main_df.copy()
-    df = df.loc[(df['price_from'] >= selected_salary_range[0]) &
-                (df['price_to'] <= selected_salary_range[1]),]
+    df = df.loc[(df['min_salary'] <= selected_salary_range[1]) &
+                (df['max_salary'] >= selected_salary_range[0]),]
     return df
 
 
@@ -148,10 +148,10 @@ df.drop(['price_unit', 'url', 'job_title'], axis=1, inplace=True)
 df.drop(['address', 'city'], axis=1, inplace=True)
 
 
-df = df.reindex(columns=['clickable_job_title', 'employer', 'price_from', 'price_to', 'contract_type', 'days_to_expiration'])
+df = df.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])
 table = df.copy()
 table.rename(
-    columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'price_from': 'Price From', 'price_to': 'Price To',
+    columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'min_salary': 'Min Salary', 'max_salary': 'Max Salary',
              'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
 
 visible_offers_num = len(table)
@@ -161,5 +161,6 @@ st.title('IT job offers with salary brackets from pracuj.pl')
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
 st.write(table.to_html(escape=False, index=False), unsafe_allow_html=True)
 
+st.write(" ")
 st.write("Data last updated (read from sql db):", timestamp)
 st.caption('Additional info')
