@@ -1,16 +1,6 @@
 import streamlit as st
 import pandas as pd
-import sqlite3
 from datetime import datetime
-
-
-@st.cache_data
-def get_data():
-    cnx = sqlite3.connect('it-job-market.db')
-    df = pd.read_sql_query("SELECT * FROM offers", cnx)
-    cnx.commit()
-    cnx.close()
-    return df
 
 
 def make_clickable_job_title(main_df):
@@ -42,7 +32,7 @@ def convert_df_to_csv(df):
     return df_to_export.to_csv().encode('utf-8')
 
 
-df = get_data()
+df = pd.read_csv('it-job-market.csv')
 offers_num = len(df)
 
 

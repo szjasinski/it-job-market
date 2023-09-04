@@ -1,31 +1,8 @@
 import streamlit as st
 import pandas as pd
-import sqlite3
 from datetime import datetime
-from geopy import Nominatim
-from geopy.extra.rate_limiter import RateLimiter
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-
-@st.cache_data
-def get_data():
-    cnx = sqlite3.connect('it-job-market.db')
-    df = pd.read_sql_query("SELECT * FROM offers", cnx)
-    cnx.commit()
-    cnx.close()
-    return df
-
-
-@st.cache_data
-def create_coordinates(main_df):
-    df = main_df.copy()
-    locator = Nominatim(user_agent='myGeocoder')
-    geocode = RateLimiter(locator.geocode, min_delay_seconds=1)
-    df['location'] = df['address'].apply(lambda x: geocode(x) if x not in [None, "None"] else None)
-    df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else (None, None, None))
-    df[['latitude', 'longitude', 'altitude']] = pd.DataFrame(df['point'].tolist(), index=df.index)
-    return df
 
 
 def create_days_to_expirations(main_df):
@@ -149,14 +126,13 @@ def load_plots(main_df):
 
 
 # GETTING DATA
-df = get_data()
+df = pd.read_csv('it-job-market.csv')
 visible_offers_num = len(df)
 offers_num = len(df)
 string_dates_list = df['scraping_datetime'].tolist()
 datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
 
-df = (df.pipe(create_coordinates)
-      .pipe(create_days_to_expirations)
+df = (df.pipe(create_days_to_expirations)
       .pipe(create_middle_price)
       )
 
