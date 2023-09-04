@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 
 
 @st.cache_data
-def get_data_and_time():
+def get_data():
     cnx = sqlite3.connect('it-job-market.db')
     df = pd.read_sql_query("SELECT * FROM offers", cnx)
     cnx.commit()
     cnx.close()
-    return df, datetime.now()
+    return df
 
 
 @st.cache_data
@@ -149,9 +149,11 @@ def load_plots(main_df):
 
 
 # GETTING DATA
-df, timestamp = get_data_and_time()
+df = get_data()
 visible_offers_num = len(df)
 offers_num = len(df)
+string_dates_list = df['scraping_datetime'].tolist()
+datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
 
 df = (df.pipe(create_coordinates)
       .pipe(create_days_to_expirations)
@@ -166,12 +168,13 @@ st.sidebar.button("Export as pdf (to do)")
 
 # -------- MAIN PAGE --------
 st.title('Plots and data summaries')
+st.write("Data was scraped from pracuj.pl between:", min(datetime_dates_list), " and ", max(datetime_dates_list))
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
+
+st.subheader("Average salary information")
 st.write("Average salary is calculated for each job offer as an average of max and min salary")
 st.write("Median of average salary:", int(df[['middle_price']].median()))
 st.write("Standard deviation of average salary:", int(df[['middle_price']].std()))
 
-
 load_plots(df)
-st.write("Data last updated (read from sql db):", timestamp)
-st.caption('Additional info')
+st.caption('Created by Szymon Jasinski')

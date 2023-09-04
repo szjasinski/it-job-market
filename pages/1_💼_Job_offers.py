@@ -5,12 +5,12 @@ from datetime import datetime
 
 
 @st.cache_data
-def get_data_and_time():
+def get_data():
     cnx = sqlite3.connect('it-job-market.db')
     df = pd.read_sql_query("SELECT * FROM offers", cnx)
     cnx.commit()
     cnx.close()
-    return df, datetime.now()
+    return df
 
 
 def make_clickable_job_title(main_df):
@@ -42,13 +42,17 @@ def convert_df_to_csv(df):
     return df_to_export.to_csv().encode('utf-8')
 
 
-df, timestamp = get_data_and_time()
+df = get_data()
 offers_num = len(df)
 
 
 df = (df.pipe(make_clickable_job_title)
       .pipe(create_days_to_expirations)
       )
+
+string_dates_list = df['scraping_datetime'].tolist()
+datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
+
 
 
 # -------- SIDEBAR MENU --------
@@ -148,19 +152,20 @@ df.drop(['price_unit', 'url', 'job_title'], axis=1, inplace=True)
 df.drop(['address', 'city'], axis=1, inplace=True)
 
 
-df = df.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])
 table = df.copy()
+table = table.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])
 table.rename(
     columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'min_salary': 'Min Salary', 'max_salary': 'Max Salary',
              'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
 
 visible_offers_num = len(table)
 
+
 # DISPLAY ON MAIN PAGE
 st.title('IT job offers with salary brackets from pracuj.pl')
+st.write("Data was scraped from pracuj.pl between:", min(datetime_dates_list), " and ", max(datetime_dates_list))
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
 st.write(table.to_html(escape=False, index=False), unsafe_allow_html=True)
 
-st.write(" ")
-st.write("Data last updated (read from sql db):", timestamp)
-st.caption('Additional info')
+
+st.caption('Created by Szymon Jasinski')
