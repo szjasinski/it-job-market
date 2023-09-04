@@ -54,7 +54,6 @@ string_dates_list = df['scraping_datetime'].tolist()
 datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
 
 
-
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")
 
@@ -66,7 +65,7 @@ selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)
 selected_sort_by = st.sidebar.selectbox('Sort by:', ['Min Salary', 'Max Salary'])
 selected_is_descending = st.sidebar.checkbox('Descending')
 selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
-selected_company_name_keywords = st.sidebar.text_input('Company name contains: (lowercase dont work)')
+selected_company_name_keywords = st.sidebar.text_input('Company name contains:')
 selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
 
 
@@ -80,7 +79,7 @@ st.sidebar.download_button(
 
 
 # -------------------------------
-
+# FUNCTIONS FOR FOR SORTING AND FILTERING DF BASED ON USER SELECTED OPTIONS
 
 # sort dataframe values
 def sort_df(main_df):
@@ -148,24 +147,23 @@ df = (df.pipe(sort_df)
       .pipe(filter_salary_range)
       )
 
-df.drop(['price_unit', 'url', 'job_title'], axis=1, inplace=True)
-df.drop(['address', 'city'], axis=1, inplace=True)
+visible_offers_num = len(df)
 
 
-table = df.copy()
-table = table.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])
-table.rename(
-    columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'min_salary': 'Min Salary', 'max_salary': 'Max Salary',
-             'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
-
-visible_offers_num = len(table)
+def write_data_table(main_df):
+    table = main_df.copy()
+    table.drop(['price_unit', 'url', 'job_title', 'address', 'city'], axis=1, inplace=True)
+    table = table.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])
+    table.rename(
+        columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'min_salary': 'Min Salary', 'max_salary': 'Max Salary',
+                 'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
+    st.write(table.to_html(escape=False, index=False), unsafe_allow_html=True)
 
 
 # DISPLAY ON MAIN PAGE
 st.title('IT job offers with salary brackets from pracuj.pl')
 st.write("Data was scraped from pracuj.pl between:", min(datetime_dates_list), " and ", max(datetime_dates_list))
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
-st.write(table.to_html(escape=False, index=False), unsafe_allow_html=True)
-
+write_data_table(df)
 
 st.caption('Created by Szymon Jasinski')
