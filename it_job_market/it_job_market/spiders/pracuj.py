@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 # CLASS FOR SCRAPING PRACUJ.PL JOB OFFERS
-PRACUJ_PAGES_NUM = 3
+PRACUJ_PAGES_NUM = 90
 pracuj_urls_generator = ["https://it.pracuj.pl/praca?pn=" + str(i) for i in range(1, PRACUJ_PAGES_NUM + 1)]
 
 

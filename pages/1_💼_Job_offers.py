@@ -32,7 +32,7 @@ def convert_df_to_csv(df):
     return df_to_export.to_csv().encode('utf-8')
 
 
-df = pd.read_csv('it-job-market.csv')
+df = pd.read_csv('it-job-market-ready.csv')
 offers_num = len(df)
 
 

@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def create_days_to_expirations(main_df):
@@ -44,7 +45,7 @@ def plot_days_to_expiration_histogram(main_df):
 def plot_map(main_df):
     df = main_df.copy()
     to_map_df = df[['latitude', 'longitude']].dropna()
-    st.map(to_map_df, color="#009d00", size=15000, zoom=5)
+    st.map(to_map_df, color="#009d00", size=15000, zoom=1)
 
 
 def write_employers_with_most_offers_df(main_df):
@@ -126,7 +127,7 @@ def load_plots(main_df):
 
 
 # GETTING DATA
-df = pd.read_csv('it-job-market.csv')
+df = pd.read_csv('it-job-market-ready.csv')
 visible_offers_num = len(df)
 offers_num = len(df)
 string_dates_list = df['scraping_datetime'].tolist()
