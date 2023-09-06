@@ -2,6 +2,14 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
+from functions_module.filtering_functions import sort_df
+from functions_module.filtering_functions import filter_job_title
+from functions_module.filtering_functions import filter_company_name
+from functions_module.filtering_functions import filter_contract_type
+from functions_module.filtering_functions import filter_salary_range
+
+from functions_module.display_table_function import write_data_table
+
 
 @st.cache_data
 def convert_df_to_csv(df):
@@ -42,67 +50,6 @@ st.sidebar.download_button(
 )
 
 
-# -------------------------------
-# FUNCTIONS FOR FOR SORTING AND FILTERING DF BASED ON USER SELECTED OPTIONS
-
-# sort dataframe values
-def sort_df(main_df, selected_sort_by, selected_is_descending):
-    df = main_df.copy()
-    if selected_sort_by == 'Max Salary' and selected_is_descending:
-        df = df.sort_values(by=['max_salary'], ascending=False)
-    elif selected_sort_by == 'Min Salary' and selected_is_descending:
-        df = df.sort_values(by=['min_salary'], ascending=False)
-    elif selected_sort_by == 'Max Salary':
-        df = df.sort_values(by=['max_salary'])
-    elif selected_sort_by == 'Min Salary':
-        df = df.sort_values(by=['min_salary'])
-    return df
-
-
-# filter df with job title keywords
-def filter_job_title(main_df, selected_job_title_keywords):
-    df = main_df.copy()
-    job_title_keywords = selected_job_title_keywords.split()
-    data = pd.DataFrame()
-    for keyword in job_title_keywords:
-        filtered_df = df[df['job_title'].str.contains(keyword)]
-        data = pd.concat([data, filtered_df])
-    data.drop_duplicates()
-    if job_title_keywords:
-        df = data
-    return df
-
-
-# filter df with company name keywords
-def filter_company_name(main_df, selected_company_name_keywords):
-    df = main_df.copy()
-    company_name_keywords = selected_company_name_keywords.split()
-    data = pd.DataFrame()
-    for keyword in company_name_keywords:
-        filtered_df = df[df['employer'].str.contains(keyword)]
-        data = pd.concat([data, filtered_df])
-    data.drop_duplicates()
-    if company_name_keywords:
-        df = data
-    return df
-
-
-# filter df with contract types
-def filter_contract_type(main_df, selected_contract_type):
-    df = main_df.copy()
-    if selected_contract_type != "All":
-        df = df[df['contract_type'].str.contains(selected_contract_type, na=False)]
-    return df
-
-
-# filter df for salary range
-def filter_salary_range(main_df, selected_salary_range):
-    df = main_df.copy()
-    df = df.loc[(df['min_salary'] <= selected_salary_range[1]) &
-                (df['max_salary'] >= selected_salary_range[0]),]
-    return df
-
-
 # APPLYING OPTIONS SELECTED BY USER
 df = (df.pipe(sort_df, selected_sort_by=selected_sort_by, selected_is_descending=selected_is_descending)
       .pipe(filter_job_title, selected_job_title_keywords)
@@ -112,16 +59,6 @@ df = (df.pipe(sort_df, selected_sort_by=selected_sort_by, selected_is_descending
       )
 
 visible_offers_num = len(df)
-
-
-def write_data_table(main_df):
-    table = main_df.copy()
-    table.drop(['price_unit', 'url', 'job_title', 'address', 'city'], axis=1, inplace=True)
-    table = table.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])
-    table.rename(
-        columns={'clickable_job_title': 'Job Title', 'employer': 'Employer', 'min_salary': 'Min Salary', 'max_salary': 'Max Salary',
-                 'contract_type': 'Contract Type', 'days_to_expiration': 'Days Left'}, inplace=True)
-    st.write(table.to_html(escape=False, index=False), unsafe_allow_html=True)
 
 
 # DISPLAY ON MAIN PAGE
