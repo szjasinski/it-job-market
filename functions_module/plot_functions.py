@@ -52,3 +52,38 @@ def plot_pydeck_map(main_df):
                          get_position='[longitude, latitude]',
                          get_color='[200, 30, 0, 160]',
                          get_radius=20000, )]))
+
+
+def plot_most_popular_words(main_df):
+    df = main_df.copy()
+
+    def custom_replace(x):
+        to_replace = ["(", ")", "-", "+", ",", "/", "–", "&"]
+        replaced = x
+        for char in to_replace:
+            replaced = replaced.replace(char, "")
+        return replaced
+
+    # replace unnecessary characters with spaces
+    job_title_list = df['job_title'].tolist()
+    for i in range(len(job_title_list)):
+        job_title_list[i] = custom_replace(job_title_list[i])
+
+    # create dict to count word occurrences
+    words_dict = {}
+    for job in job_title_list:
+        for word in job.split():
+            if word in words_dict:
+                words_dict[word] += 1
+            else:
+                words_dict[word] = 1
+
+    sorted_words = sorted(words_dict.items(), key=lambda x: x[1], reverse=True)
+    words_df = pd.DataFrame(sorted_words, columns=['Word', 'Count'])
+    words_to_drop = ["of", "in", "z", "for", "ds."]
+    df_filtered = words_df[~words_df['Word'].isin(words_to_drop)]
+    words_to_plot = df_filtered.iloc[:10, :]
+
+    fig = plt.figure(figsize=(12, 5))
+    sns.barplot(data=words_to_plot, x="Word", y="Count")
+    st.pyplot(fig)
