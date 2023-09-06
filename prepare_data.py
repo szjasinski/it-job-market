@@ -95,12 +95,13 @@ def correct_wrong_max_salary(main_df):
 
 df = get_data()
 df = (df
+      .pipe(correct_wrong_min_salary)
+      .pipe(correct_wrong_max_salary)
       .pipe(make_clickable_job_title)
       .pipe(create_days_to_expirations)
       .pipe(create_middle_price)
-      .pipe(create_coordinates)
-      .pipe(correct_wrong_min_salary)
-      .pipe(correct_wrong_max_salary)
       )
+
+df = df.pipe(create_coordinates)
 
 df.to_csv('it-job-market-ready.csv', index=False)
