@@ -5,13 +5,13 @@ from datetime import datetime
 from functions_module.summary_dfs import write_offers_with_the_lowest_min_salary_df
 from functions_module.summary_dfs import write_offers_with_the_highest_max_salary_df
 from functions_module.summary_dfs import write_employers_with_most_offers_df
-from functions_module.summary_dfs import write_top_employers_by_middle_price_df
+from functions_module.summary_dfs import write_top_employers_by_average_price_df
 
 from functions_module.plot_functions import plot_pydeck_map
-from functions_module.plot_functions import plot_middle_price_histogram
-from functions_module.plot_functions import plot_pie_chart
+from functions_module.plot_functions import plot_average_price_histogram
+from functions_module.plot_functions import plot_contract_type_pie_chart
 from functions_module.plot_functions import plot_days_to_expiration_histogram
-from functions_module.plot_functions import plot_most_popular_words
+from functions_module.plot_functions import plot_words_in_job_title_barplot
 
 
 # GETTING DATA
@@ -46,14 +46,14 @@ with col2:
     st.subheader('Top 5 job titles with the lowest min salary')
     write_offers_with_the_lowest_min_salary_df(df)
     st.subheader('Top 5 employers by average salary')
-    write_top_employers_by_middle_price_df(df)
+    write_top_employers_by_average_price_df(df)
     st.subheader('Contract type')
-    plot_pie_chart(df)
+    plot_contract_type_pie_chart(df)
 
 st.subheader('Average salary')
-plot_middle_price_histogram(df)
+plot_average_price_histogram(df)
 st.subheader('Most popular words in Job Title')
-plot_most_popular_words(df)
+plot_words_in_job_title_barplot(df)
 st.subheader('Localizations of employers headquarters')
 plot_pydeck_map(df)
 

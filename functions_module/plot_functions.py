@@ -2,9 +2,10 @@ import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pydeck as pdk
+import pandas as pd
 
 
-def plot_middle_price_histogram(main_df):
+def plot_average_price_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
@@ -22,7 +23,7 @@ def plot_days_to_expiration_histogram(main_df):
     st.pyplot(fig)
 
 
-def plot_pie_chart(main_df):
+def plot_contract_type_pie_chart(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     df = df[['contract_type', 'employer']].groupby('contract_type', as_index=False).count()
@@ -54,7 +55,7 @@ def plot_pydeck_map(main_df):
                          get_radius=20000, )]))
 
 
-def plot_most_popular_words(main_df):
+def plot_words_in_job_title_barplot(main_df):
     df = main_df.copy()
 
     def custom_replace(x):

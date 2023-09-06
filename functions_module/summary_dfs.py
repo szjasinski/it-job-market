@@ -25,7 +25,7 @@ def write_offers_with_the_lowest_min_salary_df(main_df):
     st.write(df)
 
 
-def write_top_employers_by_middle_price_df(main_df):
+def write_top_employers_by_average_price_df(main_df):
     df = main_df.copy()
     df.rename(columns={'middle_price': 'Average Price', 'min_salary': 'Min Salary', 'employer': 'Employer'}, inplace=True)
     df = df[['Average Price', 'Employer']].groupby('Employer', as_index=False).mean()
