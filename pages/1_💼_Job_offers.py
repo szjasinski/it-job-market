@@ -46,7 +46,7 @@ st.sidebar.download_button(
 # FUNCTIONS FOR FOR SORTING AND FILTERING DF BASED ON USER SELECTED OPTIONS
 
 # sort dataframe values
-def sort_df(main_df):
+def sort_df(main_df, selected_sort_by, selected_is_descending):
     df = main_df.copy()
     if selected_sort_by == 'Max Salary' and selected_is_descending:
         df = df.sort_values(by=['max_salary'], ascending=False)
@@ -60,7 +60,7 @@ def sort_df(main_df):
 
 
 # filter df with job title keywords
-def filter_job_title(main_df):
+def filter_job_title(main_df, selected_job_title_keywords):
     df = main_df.copy()
     job_title_keywords = selected_job_title_keywords.split()
     data = pd.DataFrame()
@@ -74,7 +74,7 @@ def filter_job_title(main_df):
 
 
 # filter df with company name keywords
-def filter_company_name(main_df):
+def filter_company_name(main_df, selected_company_name_keywords):
     df = main_df.copy()
     company_name_keywords = selected_company_name_keywords.split()
     data = pd.DataFrame()
@@ -88,15 +88,15 @@ def filter_company_name(main_df):
 
 
 # filter df with contract types
-def filter_contract_type(main_df):
+def filter_contract_type(main_df, selected_contract_type):
     df = main_df.copy()
     if selected_contract_type != "All":
-        df = df[df['contract_type'].str.contains(selected_contract_type)]
+        df = df[df['contract_type'].str.contains(selected_contract_type, na=False)]
     return df
 
 
 # filter df for salary range
-def filter_salary_range(main_df):
+def filter_salary_range(main_df, selected_salary_range):
     df = main_df.copy()
     df = df.loc[(df['min_salary'] <= selected_salary_range[1]) &
                 (df['max_salary'] >= selected_salary_range[0]),]
@@ -104,11 +104,11 @@ def filter_salary_range(main_df):
 
 
 # APPLYING OPTIONS SELECTED BY USER
-df = (df.pipe(sort_df)
-      .pipe(filter_job_title)
-      .pipe(filter_company_name)
-      .pipe(filter_contract_type)
-      .pipe(filter_salary_range)
+df = (df.pipe(sort_df, selected_sort_by=selected_sort_by, selected_is_descending=selected_is_descending)
+      .pipe(filter_job_title, selected_job_title_keywords)
+      .pipe(filter_company_name, selected_company_name_keywords)
+      .pipe(filter_contract_type, selected_contract_type)
+      .pipe(filter_salary_range, selected_salary_range)
       )
 
 visible_offers_num = len(df)
