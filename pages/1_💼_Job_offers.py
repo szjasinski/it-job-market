@@ -15,7 +15,7 @@ offers_num = len(df)
 
 
 string_dates_list = df['scraping_datetime'].tolist()
-datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
+datetime_dates_list = [datetime.strptime(x, '%d/%m/%Y %H:%M:%S') for x in string_dates_list]
 
 
 # -------- SIDEBAR MENU --------
