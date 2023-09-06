@@ -6,38 +6,20 @@ import matplotlib.pyplot as plt
 import pydeck as pdk
 
 
-def create_days_to_expirations(main_df):
-    df = main_df.copy()
-
-    def get_days(x):
-        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
-        delta = datetime_object - datetime.now().date()
-        return int(delta.days)
-
-    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
-    df.drop(['expiration_date'], axis=1, inplace=True)
-    return df
-
-
-def create_middle_price(main_df):
-    df = main_df.copy()
-
-    df['middle_price'] = (df['min_salary'] + df['max_salary']) / 2
-    return df
-
-
 # ----------- PLOTS FUNCTIONS
 
 def plot_middle_price_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
-    sns.histplot(data=df["middle_price"], kde=True, bins=14, binrange=(0, 70000))
+    plt.xlim(-1000, 70000)
+    sns.histplot(data=df["middle_price"], kde=True, bins=28, binrange=(0, 70000))
     st.pyplot(fig)
 
 
 def plot_days_to_expiration_histogram(main_df):
     df = main_df.copy()
-    fig = plt.figure(figsize=(12, 5))
+    fig = plt.figure(figsize=(12, 7))
+    plt.xlim(-1, 60)
     sns.histplot(data=df["days_to_expiration"], kde=True, bins=20, binrange=(0, 100))
     st.pyplot(fig)
 
@@ -186,9 +168,6 @@ offers_num = len(df)
 string_dates_list = df['scraping_datetime'].tolist()
 datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
 
-df = (df.pipe(create_days_to_expirations)
-      .pipe(create_middle_price)
-      )
 
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")

@@ -3,28 +3,6 @@ import pandas as pd
 from datetime import datetime
 
 
-def make_clickable_job_title(main_df):
-    df = main_df.copy()
-    clickable_job_titles = [f'<a target="_blank" href="{link}">{title}</a>'
-                            for link, title in zip(df['url'], df['job_title'])]
-
-    df['clickable_job_title'] = clickable_job_titles
-    return df
-
-
-def create_days_to_expirations(main_df):
-    df = main_df.copy()
-
-    def get_days(x):
-        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
-        delta = datetime_object - datetime.now().date()
-        return int(delta.days)
-
-    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
-    df.drop(['expiration_date'], axis=1, inplace=True)
-    return df
-
-
 @st.cache_data
 def convert_df_to_csv(df):
     """ Function needed for downloading CSV file """
@@ -35,10 +13,6 @@ def convert_df_to_csv(df):
 df = pd.read_csv('it-job-market-ready.csv')
 offers_num = len(df)
 
-
-df = (df.pipe(make_clickable_job_title)
-      .pipe(create_days_to_expirations)
-      )
 
 string_dates_list = df['scraping_datetime'].tolist()
 datetime_dates_list = [datetime.strptime(x, '%m/%d/%Y %H:%M:%S') for x in string_dates_list]
