@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 import seaborn as sns
 import matplotlib.pyplot as plt
-import numpy as np
+import pydeck as pdk
 
 
 def create_days_to_expirations(main_df):
@@ -31,21 +31,15 @@ def create_middle_price(main_df):
 def plot_middle_price_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
-    sns.histplot(data=df["middle_price"], kde=True, bins=14, binrange=(0,70000))
+    sns.histplot(data=df["middle_price"], kde=True, bins=14, binrange=(0, 70000))
     st.pyplot(fig)
 
 
 def plot_days_to_expiration_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
-    sns.histplot(data=df["days_to_expiration"], kde=True, bins=20, binrange=(0,100))
+    sns.histplot(data=df["days_to_expiration"], kde=True, bins=20, binrange=(0, 100))
     st.pyplot(fig)
-
-
-def plot_map(main_df):
-    df = main_df.copy()
-    to_map_df = df[['latitude', 'longitude']].dropna()
-    st.map(to_map_df, color="#009d00", size=15000, zoom=1)
 
 
 def write_employers_with_most_offers_df(main_df):
@@ -93,37 +87,61 @@ def plot_pie_chart(main_df):
     st.pyplot(fig)
 
 
-@st.cache_data
+def plot_pydeck_map(main_df):
+    df = main_df.copy()
+    chart_data = df[['latitude', 'longitude']].dropna()
+
+    st.pydeck_chart(
+        pdk.Deck(map_style=None, initial_view_state=pdk.ViewState(latitude=51.75, longitude=19.46, zoom=5, pitch=50, ),
+                 layers=[pdk.Layer(
+                     'HexagonLayer',
+                     data=chart_data,
+                     get_position='[longitude, latitude]',
+                     radius=20000,
+                     elevation_scale=300,
+                     elevation_range=[0, 1000],
+                     pickable=True,
+                     extruded=True, ),
+                     pdk.Layer(
+                         'ScatterplotLayer',
+                         data=chart_data,
+                         get_position='[longitude, latitude]',
+                         get_color='[200, 30, 0, 160]',
+                         get_radius=20000, )]))
+
+
+# @st.cache_data
 def load_plots(main_df):
     df = main_df.copy()
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader('Average salary')
-        plot_middle_price_histogram(df)
-
         st.subheader('Top 5 job titles with the highest max salary')
         write_offers_with_the_highest_max_salary_df(df)
 
         st.subheader('Top 5 employers with the most offers')
         write_employers_with_most_offers_df(df)
 
-        st.subheader('Most popular cities for company headquarter ')
-        plot_map(df)
-
-    with col2:
         st.subheader('Days to expiration')
         plot_days_to_expiration_histogram(df)
 
+    with col2:
         st.subheader('Top 5 job titles with the lowest min salary')
         write_offers_with_the_lowest_min_salary_df(df)
 
         st.subheader('Top 5 employers by average salary')
         write_top_employers_by_middle_price_df(df)
 
-        st.subheader('Percentages of offers with given contract type')
+        st.subheader('Contract type')
         plot_pie_chart(df)
+
+    st.subheader('Average salary')
+    plot_middle_price_histogram(df)
+    st.subheader('Most popular words in Job Title')
+    write_most_popular_words(df)
+    st.subheader('Localizations of employers headquarters')
+    plot_pydeck_map(df)
 
 
 # GETTING DATA
@@ -137,11 +155,9 @@ df = (df.pipe(create_days_to_expirations)
       .pipe(create_middle_price)
       )
 
-
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")
 st.sidebar.button("Export as pdf (to do)")
-
 
 # -------- MAIN PAGE --------
 st.title('Plots and data summaries')
