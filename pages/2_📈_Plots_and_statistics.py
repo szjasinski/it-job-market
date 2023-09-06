@@ -12,7 +12,8 @@ def plot_middle_price_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
-    sns.histplot(data=df["middle_price"], kde=True, bins=28, binrange=(0, 70000))
+    df.rename(columns={'middle_price': 'Average Salary'}, inplace=True)
+    sns.histplot(data=df["Average Salary"], kde=True, bins=28, binrange=(0, 70000))
     st.pyplot(fig)
 
 
@@ -20,42 +21,43 @@ def plot_days_to_expiration_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 7))
     plt.xlim(-1, 60)
-    sns.histplot(data=df["days_to_expiration"], kde=True, bins=20, binrange=(0, 100))
+    df.rename(columns={'days_to_expiration': 'Days to expiration'}, inplace=True)
+    sns.histplot(data=df["Days to expiration"], kde=True, bins=20, binrange=(0, 100))
     st.pyplot(fig)
 
 
 def write_employers_with_most_offers_df(main_df):
     df = main_df.copy()
-    emp = df[['employer', 'job_title']].groupby(['employer'], as_index=False).count().nlargest(5, 'job_title')
-    emp = emp.reindex(columns=['job_title', 'employer'])
-    emp.rename(columns={'job_title': 'Count'}, inplace=True)
-    st.write(emp.set_index('Count'))
+    df = df[['employer', 'job_title']].groupby(['employer'], as_index=False).count().nlargest(5, 'job_title')
+    df = df.reindex(columns=['job_title', 'employer'])
+    df.rename(columns={'job_title': 'Count', 'employer': 'Employer'}, inplace=True)
+    st.write(df.set_index('Count'))
 
 
 def write_offers_with_the_highest_max_salary_df(main_df):
     df = main_df.copy()
-    output_df = df[['job_title', 'max_salary']].nlargest(5, 'max_salary')
-    # emp.rename(columns={'Job Title': 'Count'}, inplace=True)
-    output_df = output_df.set_index('max_salary')
-    st.write(output_df)
+    df.rename(columns={'job_title': 'Job Title', 'max_salary': 'Max Salary'}, inplace=True)
+    df = df[['Job Title', 'Max Salary']].nlargest(5, 'Max Salary')
+    df = df.set_index('Max Salary')
+    st.write(df)
 
 
 def write_offers_with_the_lowest_min_salary_df(main_df):
     df = main_df.copy()
-    output_df = df[['job_title', 'min_salary']].nsmallest(5, 'min_salary')
-    # emp.rename(columns={'Job Title': 'Count'}, inplace=True)
-    output_df = output_df.set_index('min_salary')
-    st.write(output_df)
+    df.rename(columns={'job_title': 'Job Title', 'min_salary': 'Min Salary'}, inplace=True)
+    df = df[['Job Title', 'Min Salary']].nsmallest(5, 'Min Salary')
+    df = df.set_index('Min Salary')
+    st.write(df)
 
 
 def write_top_employers_by_middle_price_df(main_df):
     df = main_df.copy()
-    mean_middle_price_by_employer = df[['middle_price', 'employer']].groupby('employer', as_index=False).mean()
-    output_df = mean_middle_price_by_employer.reindex(columns=['middle_price', 'employer'])
-    mean_middle_price_by_employer.round(1)
-    output_df = output_df.nlargest(5, 'middle_price')
-    output_df['middle_price'] = output_df['middle_price'].apply(lambda x: round(x, 0))
-    st.write(output_df.set_index('middle_price'))
+    df.rename(columns={'middle_price': 'Average Price', 'min_salary': 'Min Salary', 'employer': 'Employer'}, inplace=True)
+    df = df[['Average Price', 'Employer']].groupby('Employer', as_index=False).mean()
+    df = df.reindex(columns=['Average Price', 'Employer'])
+    df = df.nlargest(5, 'Average Price')
+    df['Average Price'] = df['Average Price'].apply(lambda x: round(x, 0))
+    st.write(df.set_index('Average Price'))
 
     # TO CORRECT
 
@@ -63,9 +65,9 @@ def write_top_employers_by_middle_price_df(main_df):
 def plot_pie_chart(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
-    data = df[['contract_type', 'employer']].groupby('contract_type', as_index=False).count()
+    df = df[['contract_type', 'employer']].groupby('contract_type', as_index=False).count()
     palette_color = sns.color_palette('deep')
-    plt.pie(data['employer'], labels=data['contract_type'], colors=palette_color, autopct='%.0f%%')
+    plt.pie(df['employer'], labels=df['contract_type'], colors=palette_color, autopct='%.0f%%')
     st.pyplot(fig)
 
 
