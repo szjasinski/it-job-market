@@ -14,7 +14,6 @@ st.caption("What are top 5 employers that have the highest average days to expir
 st.caption("What are top 5 cities that have the highest average max salary and at least 5 offers?")
 st.caption("What are top 5 employers that have the lowest average min salary and have at least 5 offers?")
 
-pai.clear_cache()
 
 output = ''
 if st.button('Get answer!'):
@@ -25,3 +24,5 @@ if st.button('Get answer!'):
     else:
         st.write("Please ask a question :)")
 st.write(output)
+
+pai.clear_cache()
