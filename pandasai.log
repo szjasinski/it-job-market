@@ -1,0 +1,3288 @@
+2023-09-07 10:58:58 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 10:58:58 [INFO] Question: Which are the top 5 Job Titles with the highest Max Salary?
+2023-09-07 10:58:58 [INFO] Running PandasAI with openai LLM...
+2023-09-07 10:58:58 [INFO] Prompt ID: b5abbc42-82a0-4e1a-bb61-7e7cc9be87d1
+2023-09-07 10:59:13 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Get the dataframe with job titles and max salary
+    df = dfs[0][['Job Title', 'Max Salary']]
+    
+    # Sort the dataframe by max salary in descending order
+    df_sorted = df.sort_values(by='Max Salary', ascending=False)
+    
+    # Get the top 5 job titles with the highest max salary
+    top_5_job_titles = df_sorted.head(5)
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": top_5_job_titles}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 10:59:13 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = dfs[0][['Job Title', 'Max Salary']]
+    df_sorted = df.sort_values(by='Max Salary', ascending=False)
+    top_5_job_titles = df_sorted.head(5)
+    return {'type': 'dataframe', 'value': top_5_job_titles}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 10:59:13 [WARNING] Error of executing code
+2023-09-07 10:59:13 [WARNING] Failed to execute code with a correction framework [retry number: 1]
+2023-09-07 10:59:13 [INFO] Failed with error: "None of [Index(['Job Title', 'Max Salary'], dtype='object')] are in the [columns]". Retrying
+2023-09-07 10:59:28 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = dfs[0]
+    df_sorted = df.sort_values(by='Max Salary', ascending=False)
+    top_5_job_titles = df_sorted.head(5)[['Job Title', 'Max Salary']]
+    return {'type': 'dataframe', 'value': top_5_job_titles}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 10:59:28 [WARNING] Error of executing code
+2023-09-07 10:59:28 [WARNING] Failed to execute code with a correction framework [retry number: 2]
+2023-09-07 10:59:28 [INFO] Failed with error: 'Max Salary'. Retrying
+2023-09-07 10:59:42 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = dfs[0][['Job Title', 'Max Salary']]
+    df_sorted = df.sort_values(by='Max Salary', ascending=False)
+    top_5_job_titles = df_sorted.head(5)
+    return {'type': 'dataframe', 'value': top_5_job_titles}
+
+
+result = analyze_data(dfs)
+result
+        ```
+2023-09-07 10:59:42 [WARNING] Error of executing code
+2023-09-07 11:00:32 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:00:32 [INFO] Question: Which are the top 5 Job Titles with the highest Max Salary?
+2023-09-07 11:00:32 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:00:32 [INFO] Prompt ID: ed0a4ae7-0005-4cd2-9eef-ca8b2f0259d9
+2023-09-07 11:00:50 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Group by job title and calculate the maximum salary
+    max_salary_by_job_title = df.groupby('job_title')['max_salary'].max()
+
+    # Sort the job titles by the maximum salary in descending order
+    sorted_job_titles = max_salary_by_job_title.sort_values(ascending=False)
+
+    # Get the top 5 job titles with the highest maximum salary
+    top_5_job_titles = sorted_job_titles.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Job Title', 'Max Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:00:50 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    max_salary_by_job_title = df.groupby('job_title')['max_salary'].max()
+    sorted_job_titles = max_salary_by_job_title.sort_values(ascending=False)
+    top_5_job_titles = sorted_job_titles.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Max Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:00:50 [INFO] Answer: {'type': 'dataframe', 'value':                                  Job Title  Max Salary
+0               Lead DevOps/MLOps Engineer       58400
+1                 D365 Functional Lead SCM       56000
+2     Digital Lead - Supply Chain Planning       47000
+3                  Pentester / Pentesterka       45000
+4  Business Solutions Senior Data Engineer       42000}
+2023-09-07 11:00:50 [INFO] Executed in: 17.667680025100708s
+2023-09-07 11:00:50 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:05:17 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:05:17 [INFO] Question: 
+2023-09-07 11:05:17 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:05:17 [INFO] Prompt ID: 07cbeb1e-7036-45d4-acc9-f079ad1f4a22
+2023-09-07 11:05:36 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter the data to include only the relevant columns
+    df_filtered = df[['job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'city']]
+
+    # Group the data by city and calculate the average salary
+    avg_salary_by_city = df_filtered.groupby('city').agg({'min_salary': 'mean', 'max_salary': 'mean'})
+
+    # Sort the data by average salary in descending order
+    avg_salary_by_city_sorted = avg_salary_by_city.sort_values(by='min_salary', ascending=False)
+
+    # Get the top 5 cities with the highest average salary
+    top_cities = avg_salary_by_city_sorted.head(5)
+
+    # Convert the dataframe to a string
+    top_cities_str = top_cities.to_string()
+
+    # Return the result as a text
+    return {"type": "text", "value": top_cities_str}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:05:36 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    df_filtered = df[['job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'city']]
+    avg_salary_by_city = df_filtered.groupby('city').agg({'min_salary': 'mean', 'max_salary': 'mean'})
+    avg_salary_by_city_sorted = avg_salary_by_city.sort_values(by='min_salary', ascending=False)
+    top_cities = avg_salary_by_city_sorted.head(5)
+    return {'type': 'text', 'value': top_cities_str}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:05:36 [WARNING] Error of executing code
+2023-09-07 11:05:36 [WARNING] Failed to execute code with a correction framework [retry number: 1]
+2023-09-07 11:05:36 [INFO] Failed with error: name 'top_cities_str' is not defined. Retrying
+2023-09-07 11:05:55 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    df_filtered = df[['job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'city']]
+    avg_salary_by_city = df_filtered.groupby('city').agg({'min_salary': 'mean', 'max_salary': 'mean'})
+    avg_salary_by_city_sorted = avg_salary_by_city.sort_values(by='min_salary', ascending=False)
+    top_cities = avg_salary_by_city_sorted.head(5)
+    return {'type': 'text', 'value': top_cities_str}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:05:55 [WARNING] Error of executing code
+2023-09-07 11:05:55 [WARNING] Failed to execute code with a correction framework [retry number: 2]
+2023-09-07 11:05:55 [INFO] Failed with error: name 'top_cities_str' is not defined. Retrying
+2023-09-07 11:06:13 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    df_filtered = df[['job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'city']]
+    avg_salary_by_city = df_filtered.groupby('city').agg({'min_salary': 'mean', 'max_salary': 'mean'})
+    avg_salary_by_city_sorted = avg_salary_by_city.sort_values(by='min_salary', ascending=False)
+    top_cities = avg_salary_by_city_sorted.head(5)
+    return {'type': 'text', 'value': top_cities_str}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:06:13 [WARNING] Error of executing code
+2023-09-07 11:08:52 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:08:52 [INFO] Question: What is the average salary?
+2023-09-07 11:08:52 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:08:52 [INFO] Prompt ID: dfd5cd0d-3d60-4d10-b624-e09f376c1bdc
+2023-09-07 11:09:04 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Process
+    # Calculate the average salary
+    average_salary = dfs[0]['middle_price'].mean()
+    
+    # Output
+    return {"type": "number", "value": average_salary}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:09:04 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    average_salary = dfs[0]['middle_price'].mean()
+    return {'type': 'number', 'value': average_salary}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:09:04 [INFO] Answer: {'type': 'number', 'value': 17218.99091826438}
+2023-09-07 11:09:04 [INFO] Executed in: 12.034023761749268s
+2023-09-07 11:09:42 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:09:42 [INFO] Question: What is the average max salary for Python Developers in Warsaw?
+2023-09-07 11:09:42 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:09:42 [INFO] Prompt ID: b2542152-3231-46b4-a94f-bca729acd9e8
+2023-09-07 11:09:56 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Filter the dataframe to include only Python Developers in Warsaw
+    filtered_df = dfs[0][(dfs[0]['job_title'].str.contains('Python')) & (dfs[0]['city'] == 'Warsaw')]
+    
+    # Calculate the average max salary
+    average_max_salary = filtered_df['max_salary'].mean()
+    
+    # Return the result as a text
+    return {"type": "text", "value": f"The average max salary for Python Developers in Warsaw is {average_max_salary:.2f}."}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:09:56 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    filtered_df = dfs[0][dfs[0]['job_title'].str.contains('Python') & (dfs[0]['city'] == 'Warsaw')]
+    average_max_salary = filtered_df['max_salary'].mean()
+    return {'type': 'text', 'value': f'The average max salary for Python Developers in Warsaw is {average_max_salary:.2f}.'}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:09:56 [INFO] Answer: {'type': 'text', 'value': 'The average max salary for Python Developers in Warsaw is nan.'}
+2023-09-07 11:09:56 [INFO] Executed in: 13.60822868347168s
+2023-09-07 11:10:19 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:10:19 [INFO] Question: What is the average max salary for Job Titles containing 'Python'?
+2023-09-07 11:10:19 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:10:19 [INFO] Prompt ID: ac61f02a-d629-41d4-ae99-ddd8f4a7dc8d
+2023-09-07 11:10:32 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter job titles containing 'Python'
+    python_jobs = df[df['job_title'].str.contains('Python', case=False)]
+
+    # Calculate the average max salary
+    avg_max_salary = python_jobs['max_salary'].mean()
+
+    # Return the result
+    return {"type": "number", "value": avg_max_salary}
+
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:10:32 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    python_jobs = df[df['job_title'].str.contains('Python', case=False)]
+    avg_max_salary = python_jobs['max_salary'].mean()
+    return {'type': 'number', 'value': avg_max_salary}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:10:32 [INFO] Answer: {'type': 'number', 'value': 22096.25}
+2023-09-07 11:10:32 [INFO] Executed in: 13.096166133880615s
+2023-09-07 11:10:50 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:10:50 [INFO] Question: What is the average max salary for job titles containing 'Python'?
+2023-09-07 11:10:50 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:10:50 [INFO] Prompt ID: 3d341b98-093a-49f8-bb31-80fc5680c5fb
+2023-09-07 11:11:02 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Filter the job titles containing 'Python'
+    python_jobs = dfs[0][dfs[0]['job_title'].str.contains('Python')]
+    
+    # Calculate the average max salary
+    avg_max_salary = python_jobs['max_salary'].mean()
+    
+    # Return the result
+    return {"type": "number", "value": avg_max_salary}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:11:02 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    python_jobs = dfs[0][dfs[0]['job_title'].str.contains('Python')]
+    avg_max_salary = python_jobs['max_salary'].mean()
+    return {'type': 'number', 'value': avg_max_salary}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:11:02 [INFO] Answer: {'type': 'number', 'value': 22096.25}
+2023-09-07 11:11:02 [INFO] Executed in: 12.293279886245728s
+2023-09-07 11:11:47 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:11:47 [INFO] Question: What are top 5 most pupular cities?
+2023-09-07 11:11:47 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:11:47 [INFO] Prompt ID: 2e31c9e0-fee5-4979-a4b6-bb3e0a8e5ac1
+2023-09-07 11:12:03 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by city and count the number of occurrences
+    city_counts = df['city'].value_counts()
+    
+    # Get the top 5 most popular cities
+    top_cities = city_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    
+    # Sort the dataframe by count in descending order
+    result_df = result_df.sort_values('Count', ascending=False)
+    
+    # Reset the index of the dataframe
+    result_df = result_df.reset_index(drop=True)
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:12:03 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    city_counts = df['city'].value_counts()
+    top_cities = city_counts.head(5)
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    result_df = result_df.sort_values('Count', ascending=False)
+    result_df = result_df.reset_index(drop=True)
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:12:04 [INFO] Answer: {'type': 'dataframe', 'value':                      City  Count
+0   Warszawa, mazowieckie    342
+1      Warszawa, Masovian    161
+2   Kraków, Lesser Poland     78
+3  Wrocław, Lower Silesia     48
+4      Gdańsk, Pomeranian     42}
+2023-09-07 11:12:04 [INFO] Executed in: 16.22713875770569s
+2023-09-07 11:12:04 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:12:10 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:12:10 [INFO] Question: What are top 5 most pupular cities?
+2023-09-07 11:12:10 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:12:10 [INFO] Prompt ID: 41c9be1b-d42d-4ab1-aecf-918926620a05
+2023-09-07 11:12:27 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by city and count the number of occurrences
+    city_counts = df['city'].value_counts()
+    
+    # Get the top 5 most popular cities
+    top_cities = city_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    
+    # Sort the dataframe by count in descending order
+    result_df = result_df.sort_values('Count', ascending=False)
+    
+    # Reset the index of the dataframe
+    result_df = result_df.reset_index(drop=True)
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:12:27 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    city_counts = df['city'].value_counts()
+    top_cities = city_counts.head(5)
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    result_df = result_df.sort_values('Count', ascending=False)
+    result_df = result_df.reset_index(drop=True)
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:12:27 [INFO] Answer: {'type': 'dataframe', 'value':                      City  Count
+0   Warszawa, mazowieckie    342
+1      Warszawa, Masovian    161
+2   Kraków, Lesser Poland     78
+3  Wrocław, Lower Silesia     48
+4      Gdańsk, Pomeranian     42}
+2023-09-07 11:12:27 [INFO] Executed in: 16.614161252975464s
+2023-09-07 11:12:27 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:14:26 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:14:26 [INFO] Question: What are top 5 most pupular cities?
+2023-09-07 11:14:26 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:14:26 [INFO] Prompt ID: 5e374cbb-dfb7-4dc8-943e-36b830451fb1
+2023-09-07 11:14:26 [INFO] Using cached response
+2023-09-07 11:14:26 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by city and count the number of occurrences
+    city_counts = df['city'].value_counts()
+    
+    # Get the top 5 most popular cities
+    top_cities = city_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    
+    # Sort the dataframe by count in descending order
+    result_df = result_df.sort_values('Count', ascending=False)
+    
+    # Reset the index of the dataframe
+    result_df = result_df.reset_index(drop=True)
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:14:26 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    city_counts = df['city'].value_counts()
+    top_cities = city_counts.head(5)
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    result_df = result_df.sort_values('Count', ascending=False)
+    result_df = result_df.reset_index(drop=True)
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:14:26 [INFO] Answer: {'type': 'dataframe', 'value':                      City  Count
+0   Warszawa, mazowieckie    342
+1      Warszawa, Masovian    161
+2   Kraków, Lesser Poland     78
+3  Wrocław, Lower Silesia     48
+4      Gdańsk, Pomeranian     42}
+2023-09-07 11:14:26 [INFO] Executed in: 0.00847482681274414s
+2023-09-07 11:14:26 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:14:31 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:14:31 [INFO] Question: What are top 5 most pupular cities?
+2023-09-07 11:14:31 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:14:31 [INFO] Prompt ID: 42d9d07b-736d-45be-a5dc-b141a5f3823e
+2023-09-07 11:14:31 [INFO] Using cached response
+2023-09-07 11:14:31 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by city and count the number of occurrences
+    city_counts = df['city'].value_counts()
+    
+    # Get the top 5 most popular cities
+    top_cities = city_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    
+    # Sort the dataframe by count in descending order
+    result_df = result_df.sort_values('Count', ascending=False)
+    
+    # Reset the index of the dataframe
+    result_df = result_df.reset_index(drop=True)
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:14:31 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    city_counts = df['city'].value_counts()
+    top_cities = city_counts.head(5)
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    result_df = result_df.sort_values('Count', ascending=False)
+    result_df = result_df.reset_index(drop=True)
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:14:31 [INFO] Answer: {'type': 'dataframe', 'value':                      City  Count
+0   Warszawa, mazowieckie    342
+1      Warszawa, Masovian    161
+2   Kraków, Lesser Poland     78
+3  Wrocław, Lower Silesia     48
+4      Gdańsk, Pomeranian     42}
+2023-09-07 11:14:31 [INFO] Executed in: 0.006438016891479492s
+2023-09-07 11:14:31 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:14:57 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:14:57 [INFO] Question: 
+2023-09-07 11:14:57 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:14:57 [INFO] Prompt ID: 767ca81d-b456-464c-af6b-049cdb0c197e
+2023-09-07 11:15:21 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # 1. Prepare: Preprocessing and cleaning data if necessary
+    # Remove unnecessary columns
+    df = df.drop(columns=['url', 'scraping_datetime', 'clickable_job_title', 'days_to_expiration', 'location', 'point', 'altitude'])
+
+    # Convert salary columns to numeric
+    df['min_salary'] = pd.to_numeric(df['min_salary'], errors='coerce')
+    df['max_salary'] = pd.to_numeric(df['max_salary'], errors='coerce')
+
+    # 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+    # Calculate the average salary
+    avg_salary = df['min_salary'].mean()
+
+    # Filter the data for job titles containing "Software Engineer"
+    software_engineer_df = df[df['job_title'].str.contains('Software Engineer', case=False)]
+
+    # 3. Analyze: Conducting the actual analysis
+    # Create a bar chart of the average salary by city
+    avg_salary_by_city = software_engineer_df.groupby('city')['min_salary'].mean()
+    chart_path = 'exports/charts/temp_chart.png'
+    avg_salary_by_city.plot(kind='bar', title='Average Salary by City').get_figure().savefig(chart_path)
+
+    # 4. Output: return a dictionary of the analysis results
+    return {
+        "type": "text",
+        "value": f"The average salary for Software Engineers is {avg_salary:.2f}.\n\nYou can find the bar chart of the average salary by city [here]({chart_path})."
+    }
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:15:21 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    df = df.drop(columns=['url', 'scraping_datetime', 'clickable_job_title', 'days_to_expiration', 'location', 'point', 'altitude'])
+    df['min_salary'] = pd.to_numeric(df['min_salary'], errors='coerce')
+    df['max_salary'] = pd.to_numeric(df['max_salary'], errors='coerce')
+    avg_salary = df['min_salary'].mean()
+    software_engineer_df = df[df['job_title'].str.contains('Software Engineer', case=False)]
+    avg_salary_by_city = software_engineer_df.groupby('city')['min_salary'].mean()
+    chart_path = 'exports/charts/temp_chart.png'
+    avg_salary_by_city.plot(kind='bar', title='Average Salary by City').get_figure().savefig(chart_path)
+    return {'type': 'text', 'value': f"""The average salary for Software Engineers is {avg_salary:.2f}.
+
+You can find the bar chart of the average salary by city [here]({chart_path})."""}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:15:21 [INFO] Answer: {'type': 'text', 'value': 'The average salary for Software Engineers is 14570.88.\n\nYou can find the bar chart of the average salary by city [here](exports/charts/temp_chart.png).'}
+2023-09-07 11:15:21 [INFO] Executed in: 24.374831914901733s
+2023-09-07 11:15:54 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:15:54 [INFO] Question: What are top 5 most pupular cities?
+2023-09-07 11:15:54 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:15:54 [INFO] Prompt ID: 0f5b0d9e-d6cf-45dc-9d21-ac44190b9614
+2023-09-07 11:15:54 [INFO] Using cached response
+2023-09-07 11:15:54 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by city and count the number of occurrences
+    city_counts = df['city'].value_counts()
+    
+    # Get the top 5 most popular cities
+    top_cities = city_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    
+    # Sort the dataframe by count in descending order
+    result_df = result_df.sort_values('Count', ascending=False)
+    
+    # Reset the index of the dataframe
+    result_df = result_df.reset_index(drop=True)
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:15:54 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    city_counts = df['city'].value_counts()
+    top_cities = city_counts.head(5)
+    result_df = pd.DataFrame({'City': top_cities.index, 'Count': top_cities.values})
+    result_df = result_df.sort_values('Count', ascending=False)
+    result_df = result_df.reset_index(drop=True)
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:15:54 [INFO] Answer: {'type': 'dataframe', 'value':                      City  Count
+0   Warszawa, mazowieckie    342
+1      Warszawa, Masovian    161
+2   Kraków, Lesser Poland     78
+3  Wrocław, Lower Silesia     48
+4      Gdańsk, Pomeranian     42}
+2023-09-07 11:15:54 [INFO] Executed in: 0.0033740997314453125s
+2023-09-07 11:15:54 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:15:59 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:15:59 [INFO] Question: What is the average max salary for job titles containing 'Python'?
+2023-09-07 11:15:59 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:15:59 [INFO] Prompt ID: 1db322ed-8a42-422f-92af-65191bb5cf78
+2023-09-07 11:15:59 [INFO] Using cached response
+2023-09-07 11:15:59 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Filter the job titles containing 'Python'
+    python_jobs = dfs[0][dfs[0]['job_title'].str.contains('Python')]
+    
+    # Calculate the average max salary
+    avg_max_salary = python_jobs['max_salary'].mean()
+    
+    # Return the result
+    return {"type": "number", "value": avg_max_salary}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:15:59 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    python_jobs = dfs[0][dfs[0]['job_title'].str.contains('Python')]
+    avg_max_salary = python_jobs['max_salary'].mean()
+    return {'type': 'number', 'value': avg_max_salary}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:15:59 [INFO] Answer: {'type': 'number', 'value': 22096.25}
+2023-09-07 11:15:59 [INFO] Executed in: 0.001748800277709961s
+2023-09-07 11:16:24 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:16:24 [INFO] Question: What are to most popular words in job titles?
+2023-09-07 11:16:24 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:16:24 [INFO] Prompt ID: 1cc43950-8936-4fdb-84e0-3c2122f0821f
+2023-09-07 11:16:39 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+from collections import Counter
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all job titles into a single string
+    job_titles = ' '.join(dfs[0]['job_title'].tolist())
+    
+    # Split the string into individual words
+    words = job_titles.split()
+    
+    # Count the frequency of each word
+    word_counts = Counter(words)
+    
+    # Get the most common words
+    most_common_words = word_counts.most_common(10)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:16:39 [WARNING] Failed to execute code with a correction framework [retry number: 1]
+2023-09-07 11:16:39 [INFO] Failed with error: Generated code includes import of collections which is not in whitelist.. Retrying
+2023-09-07 11:16:47 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:16:47 [INFO] Question: What are to most popular words in job titles?
+2023-09-07 11:16:47 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:16:47 [INFO] Prompt ID: a5622620-f82c-448f-95f0-f5dc67c5a419
+2023-09-07 11:16:54 [WARNING] Failed to execute code with a correction framework [retry number: 2]
+2023-09-07 11:16:54 [INFO] Failed with error: Generated code includes import of collections which is not in whitelist.. Retrying
+2023-09-07 11:17:04 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+from collections import Counter
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all job titles into a single string
+    job_titles = ' '.join(dfs[0]['job_title'].tolist())
+    
+    # Split the string into individual words
+    words = job_titles.split()
+    
+    # Count the frequency of each word
+    word_counts = Counter(words)
+    
+    # Get the most common words
+    most_common_words = word_counts.most_common(10)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:17:04 [WARNING] Failed to execute code with a correction framework [retry number: 1]
+2023-09-07 11:17:04 [INFO] Failed with error: Generated code includes import of collections which is not in whitelist.. Retrying
+2023-09-07 11:17:19 [WARNING] Failed to execute code with a correction framework [retry number: 2]
+2023-09-07 11:17:19 [INFO] Failed with error: Generated code includes import of collections which is not in whitelist.. Retrying
+2023-09-07 11:18:47 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:18:47 [INFO] Question: What employers have offers with the highest average days to expiration?
+2023-09-07 11:18:47 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:18:47 [INFO] Prompt ID: bbf415b4-a8a6-415c-9621-9dc66300f4e1
+2023-09-07 11:19:00 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:19:00 [INFO] Question: What employers have offers with the highest average days to expiration?
+2023-09-07 11:19:00 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:19:00 [INFO] Prompt ID: 8e91709d-6d44-4d22-b056-00ce45df2393
+2023-09-07 11:19:03 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df_combined = pd.concat(dfs)
+
+    # Group by employer and calculate the average days to expiration
+    df_avg_days_to_expiration = df_combined.groupby('employer')['days_to_expiration'].mean().reset_index()
+
+    # Sort by average days to expiration in descending order
+    df_sorted = df_avg_days_to_expiration.sort_values('days_to_expiration', ascending=False)
+
+    # Get the employers with the highest average days to expiration
+    top_employers = df_sorted.head(10)['employer']
+
+    # Convert the result to a list
+    top_employers_list = top_employers.tolist()
+
+    # Prepare the output dictionary
+    output = {
+        "type": "text",
+        "value": f"The employers with the highest average days to expiration are: {', '.join(top_employers_list)}"
+    }
+
+    return output
+
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:19:03 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df_combined = pd.concat(dfs)
+    df_avg_days_to_expiration = df_combined.groupby('employer')['days_to_expiration'].mean().reset_index()
+    df_sorted = df_avg_days_to_expiration.sort_values('days_to_expiration', ascending=False)
+    top_employers = df_sorted.head(10)['employer']
+    top_employers_list = top_employers.tolist()
+    output = {'type': 'text', 'value': f"The employers with the highest average days to expiration are: {', '.join(top_employers_list)}"}
+    return output
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:19:03 [INFO] Answer: {'type': 'text', 'value': 'The employers with the highest average days to expiration are: Firma Testowa PD, Locon Sp. z o.o., InfoTiles AS, Lemon.io, SmartRecruiters INC, Grupa Pracuj, BYLD TECHNOLOGIES sp. z o.o., INTENSE Group Sp. z o.o., APPLOVER Sp. z o.o., ODYSSEY LOGISTICS SP Z O O'}
+2023-09-07 11:19:03 [INFO] Executed in: 16.803343057632446s
+2023-09-07 11:20:21 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:20:21 [INFO] Question: What employers have offers with the highest average days to expiration?
+2023-09-07 11:20:21 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:20:21 [INFO] Prompt ID: d3b81832-ae07-456b-932c-bb8ddc1fbda9
+2023-09-07 11:20:21 [INFO] Using cached response
+2023-09-07 11:20:21 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df_combined = pd.concat(dfs)
+
+    # Group by employer and calculate the average days to expiration
+    df_avg_days_to_expiration = df_combined.groupby('employer')['days_to_expiration'].mean().reset_index()
+
+    # Sort by average days to expiration in descending order
+    df_sorted = df_avg_days_to_expiration.sort_values('days_to_expiration', ascending=False)
+
+    # Get the employers with the highest average days to expiration
+    top_employers = df_sorted.head(10)['employer']
+
+    # Convert the result to a list
+    top_employers_list = top_employers.tolist()
+
+    # Prepare the output dictionary
+    output = {
+        "type": "text",
+        "value": f"The employers with the highest average days to expiration are: {', '.join(top_employers_list)}"
+    }
+
+    return output
+
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:20:21 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df_combined = pd.concat(dfs)
+    df_avg_days_to_expiration = df_combined.groupby('employer')['days_to_expiration'].mean().reset_index()
+    df_sorted = df_avg_days_to_expiration.sort_values('days_to_expiration', ascending=False)
+    top_employers = df_sorted.head(10)['employer']
+    top_employers_list = top_employers.tolist()
+    output = {'type': 'text', 'value': f"The employers with the highest average days to expiration are: {', '.join(top_employers_list)}"}
+    return output
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:20:21 [INFO] Answer: {'type': 'text', 'value': 'The employers with the highest average days to expiration are: Firma Testowa PD, Locon Sp. z o.o., InfoTiles AS, Lemon.io, SmartRecruiters INC, Grupa Pracuj, BYLD TECHNOLOGIES sp. z o.o., INTENSE Group Sp. z o.o., APPLOVER Sp. z o.o., ODYSSEY LOGISTICS SP Z O O'}
+2023-09-07 11:20:21 [INFO] Executed in: 0.005441904067993164s
+2023-09-07 11:20:56 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:20:56 [INFO] Question: What employers have offers with the highest average days to expiration and what are the values?
+2023-09-07 11:20:56 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:20:56 [INFO] Prompt ID: a579a00a-4b09-4633-be93-d6db0b0bce28
+2023-09-07 11:21:11 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Group by employer and calculate the average days to expiration
+    avg_days_to_expiration = df.groupby('employer')['days_to_expiration'].mean()
+
+    # Find the employers with the highest average days to expiration
+    max_avg_days_to_expiration = avg_days_to_expiration.max()
+    employers_with_max_avg_days_to_expiration = avg_days_to_expiration[avg_days_to_expiration == max_avg_days_to_expiration]
+
+    # Prepare the output
+    output = {
+        "type": "dataframe",
+        "value": employers_with_max_avg_days_to_expiration.to_frame().reset_index()
+    }
+
+    return output
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:21:11 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    avg_days_to_expiration = df.groupby('employer')['days_to_expiration'].mean()
+    max_avg_days_to_expiration = avg_days_to_expiration.max()
+    employers_with_max_avg_days_to_expiration = avg_days_to_expiration[avg_days_to_expiration == max_avg_days_to_expiration]
+    output = {'type': 'dataframe', 'value': employers_with_max_avg_days_to_expiration.to_frame().reset_index()}
+    return output
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:21:11 [INFO] Answer: {'type': 'dataframe', 'value':            employer  days_to_expiration
+0  Firma Testowa PD               268.0}
+2023-09-07 11:21:11 [INFO] Executed in: 15.633747100830078s
+2023-09-07 11:21:11 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:24:00 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:24:00 [INFO] Question: What are top 5 cities that have the highest average max salary and what is its value?
+2023-09-07 11:24:00 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:24:00 [INFO] Prompt ID: f2a08faa-c1f6-4a37-adad-63f3223a2714
+2023-09-07 11:24:17 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Group by city and calculate the average max salary
+    avg_max_salary = df.groupby('city')['max_salary'].mean()
+
+    # Sort the average max salary in descending order
+    sorted_avg_max_salary = avg_max_salary.sort_values(ascending=False)
+
+    # Get the top 5 cities with the highest average max salary
+    top_5_cities = sorted_avg_max_salary.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_5_cities.index, 'Average Max Salary': top_5_cities.values})
+
+    # Convert the result dataframe to a dictionary
+    result_dict = result_df.to_dict(orient='records')
+
+    # Return the result dictionary
+    return {"type": "dataframe", "value": result_dict}
+
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:24:17 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    avg_max_salary = df.groupby('city')['max_salary'].mean()
+    sorted_avg_max_salary = avg_max_salary.sort_values(ascending=False)
+    top_5_cities = sorted_avg_max_salary.head(5)
+    result_df = pd.DataFrame({'City': top_5_cities.index, 'Average Max Salary': top_5_cities.values})
+    result_dict = result_df.to_dict(orient='records')
+    return {'type': 'dataframe', 'value': result_dict}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:24:17 [INFO] Answer: {'type': 'dataframe', 'value': [{'City': 'abroad', 'Average Max Salary': 29433.666666666668}, {'City': 'Masovian', 'Average Max Salary': 28800.0}, {'City': 'Białystok, podlaskie', 'Average Max Salary': 26000.0}, {'City': 'Pruszków, mazowieckie', 'Average Max Salary': 25600.0}, {'City': 'Lublin, Lublin', 'Average Max Salary': 25066.666666666668}]}
+2023-09-07 11:24:17 [INFO] Executed in: 17.513848781585693s
+2023-09-07 11:24:17 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:26:14 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:26:14 [INFO] Question: What are top 10 employers that have the highest average days to expiration?
+2023-09-07 11:26:14 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:26:14 [INFO] Prompt ID: 30bac181-f89d-4a9a-a23c-75743e14826e
+2023-09-07 11:26:33 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df_combined = pd.concat(dfs)
+    
+    # Group by employer and calculate the average days to expiration
+    df_avg_days_to_expiration = df_combined.groupby('employer')['days_to_expiration'].mean().reset_index()
+    
+    # Sort by average days to expiration in descending order
+    df_sorted = df_avg_days_to_expiration.sort_values('days_to_expiration', ascending=False)
+    
+    # Get the top 10 employers with the highest average days to expiration
+    top_10_employers = df_sorted.head(10)
+    
+    # Prepare the output dataframe
+    output_df = top_10_employers[['employer', 'days_to_expiration']]
+    
+    # Rename the columns
+    output_df.columns = ['Employer', 'Average Days to Expiration']
+    
+    # Reset the index
+    output_df.reset_index(drop=True, inplace=True)
+    
+    # Convert the dataframe to a dictionary
+    output_dict = output_df.to_dict(orient='records')
+    
+    # Return the output dictionary
+    return {"type": "dataframe", "value": output_dict}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:26:33 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df_combined = pd.concat(dfs)
+    df_avg_days_to_expiration = df_combined.groupby('employer')['days_to_expiration'].mean().reset_index()
+    df_sorted = df_avg_days_to_expiration.sort_values('days_to_expiration', ascending=False)
+    top_10_employers = df_sorted.head(10)
+    output_df = top_10_employers[['employer', 'days_to_expiration']]
+    output_df.columns = ['Employer', 'Average Days to Expiration']
+    output_df.reset_index(drop=True, inplace=True)
+    output_dict = output_df.to_dict(orient='records')
+    return {'type': 'dataframe', 'value': output_dict}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:26:33 [INFO] Answer: {'type': 'dataframe', 'value': [{'Employer': 'Firma Testowa PD', 'Average Days to Expiration': 268.0}, {'Employer': 'Locon Sp. z o.o.', 'Average Days to Expiration': 43.0}, {'Employer': 'InfoTiles AS', 'Average Days to Expiration': 40.0}, {'Employer': 'Lemon.io', 'Average Days to Expiration': 37.0}, {'Employer': 'SmartRecruiters INC', 'Average Days to Expiration': 32.75}, {'Employer': 'Grupa Pracuj', 'Average Days to Expiration': 32.5}, {'Employer': 'BYLD TECHNOLOGIES sp. z o.o.', 'Average Days to Expiration': 28.0}, {'Employer': 'INTENSE Group Sp. z o.o.', 'Average Days to Expiration': 28.0}, {'Employer': 'APPLOVER Sp. z o.o.', 'Average Days to Expiration': 28.0}, {'Employer': 'ODYSSEY LOGISTICS SP Z O O', 'Average Days to Expiration': 28.0}]}
+2023-09-07 11:26:33 [INFO] Executed in: 19.771800994873047s
+2023-09-07 11:26:33 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:31:00 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:31:00 [INFO] Question: What are top 10 employers that have the highest average days to expiration?
+2023-09-07 11:31:00 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:31:00 [INFO] Prompt ID: 86e38c26-cdf0-455d-914d-9d3cd506e963
+2023-09-07 11:31:17 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Group by employer and calculate the average days to expiration
+    avg_days_to_expiration = df.groupby('employer')['days_to_expiration'].mean()
+
+    # Sort the employers by average days to expiration in descending order
+    sorted_employers = avg_days_to_expiration.sort_values(ascending=False)
+
+    # Get the top 10 employers with the highest average days to expiration
+    top_10_employers = sorted_employers.head(10)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_10_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Days to Expiration']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:31:17 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    avg_days_to_expiration = df.groupby('employer')['days_to_expiration'].mean()
+    sorted_employers = avg_days_to_expiration.sort_values(ascending=False)
+    top_10_employers = sorted_employers.head(10)
+    result_df = pd.DataFrame(top_10_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Days to Expiration']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:31:17 [INFO] Answer: {'type': 'dataframe', 'value':                        Employer  Average Days to Expiration
+0              Firma Testowa PD                      268.00
+1              Locon Sp. z o.o.                       43.00
+2                  InfoTiles AS                       40.00
+3                      Lemon.io                       37.00
+4           SmartRecruiters INC                       32.75
+5                  Grupa Pracuj                       32.50
+6  BYLD TECHNOLOGIES sp. z o.o.                       28.00
+7      INTENSE Group Sp. z o.o.                       28.00
+8           APPLOVER Sp. z o.o.                       28.00
+9    ODYSSEY LOGISTICS SP Z O O                       28.00}
+2023-09-07 11:31:17 [INFO] Executed in: 17.03170084953308s
+2023-09-07 11:31:17 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:21 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:21 [INFO] Question: What are top 5 employers that have the lowest average min salary and have at least 5 offers?
+2023-09-07 11:34:21 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:34:21 [INFO] Prompt ID: 7d47120c-3721-4e12-b553-99bed0fe259e
+2023-09-07 11:34:24 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:24 [INFO] Question: What are top 5 employers that have the lowest average min salary and have at least 5 offers?
+2023-09-07 11:34:24 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:34:24 [INFO] Prompt ID: 69059925-05cb-45a8-bde2-5894962708d7
+2023-09-07 11:34:29 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:29 [INFO] Question: What are top 5 employers that have the lowest average min salary and have at least 5 offers?
+2023-09-07 11:34:29 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:34:29 [INFO] Prompt ID: 0f6f25ca-e40f-4fd9-a345-14b9ab311eda
+2023-09-07 11:34:37 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:37 [INFO] Question: What are top 5 employers that have the lowest average min salary and have at least 5 offers?
+2023-09-07 11:34:37 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:34:37 [INFO] Prompt ID: 69657d98-0744-405d-afec-df8445ebb5e8
+2023-09-07 11:34:39 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter employers with at least 5 offers
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+
+    # Calculate the average min salary for each employer
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+
+    # Sort the employers by average min salary in ascending order
+    sorted_employers = avg_min_salary.sort_values()
+
+    # Get the top 5 employers with the lowest average min salary
+    top_5_employers = sorted_employers.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Min Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:34:39 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+    sorted_employers = avg_min_salary.sort_values()
+    top_5_employers = sorted_employers.head(5)
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Min Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:34:39 [INFO] Answer: {'type': 'dataframe', 'value':                    Employer  Average Min Salary
+0        Catalogic Software         7857.142857
+1  Flying Bisons sp. z o.o.         8000.000000
+2         Lufthansa Systems         9500.000000
+3                      NASK        10352.941176
+4        Zone IT Sp. z o.o.        11000.000000}
+2023-09-07 11:34:39 [INFO] Executed in: 17.623247146606445s
+2023-09-07 11:34:39 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:42 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter employers with at least 5 offers
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+
+    # Calculate the average min salary for each employer
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+
+    # Sort the employers by average min salary in ascending order
+    sorted_employers = avg_min_salary.sort_values()
+
+    # Get the top 5 employers with the lowest average min salary
+    top_5_employers = sorted_employers.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Min Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:34:42 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+    sorted_employers = avg_min_salary.sort_values()
+    top_5_employers = sorted_employers.head(5)
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Min Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:34:42 [INFO] Answer: {'type': 'dataframe', 'value':                    Employer  Average Min Salary
+0        Catalogic Software         7857.142857
+1  Flying Bisons sp. z o.o.         8000.000000
+2         Lufthansa Systems         9500.000000
+3                      NASK        10352.941176
+4        Zone IT Sp. z o.o.        11000.000000}
+2023-09-07 11:34:42 [INFO] Executed in: 17.625967025756836s
+2023-09-07 11:34:42 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:48 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter employers with at least 5 offers
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+
+    # Calculate the average min salary for each employer
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+
+    # Sort the employers by average min salary in ascending order
+    sorted_employers = avg_min_salary.sort_values()
+
+    # Get the top 5 employers with the lowest average min salary
+    top_5_employers = sorted_employers.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Min Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:34:48 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+    sorted_employers = avg_min_salary.sort_values()
+    top_5_employers = sorted_employers.head(5)
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Min Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:34:48 [INFO] Answer: {'type': 'dataframe', 'value':                    Employer  Average Min Salary
+0        Catalogic Software         7857.142857
+1  Flying Bisons sp. z o.o.         8000.000000
+2         Lufthansa Systems         9500.000000
+3                      NASK        10352.941176
+4        Zone IT Sp. z o.o.        11000.000000}
+2023-09-07 11:34:48 [INFO] Executed in: 18.342626094818115s
+2023-09-07 11:34:48 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:34:55 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter employers with at least 5 offers
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+
+    # Calculate the average min salary for each employer
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+
+    # Sort the employers by average min salary in ascending order
+    sorted_employers = avg_min_salary.sort_values()
+
+    # Get the top 5 employers with the lowest average min salary
+    top_5_employers = sorted_employers.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Min Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:34:55 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+    sorted_employers = avg_min_salary.sort_values()
+    top_5_employers = sorted_employers.head(5)
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Min Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:34:55 [INFO] Answer: {'type': 'dataframe', 'value':                    Employer  Average Min Salary
+0        Catalogic Software         7857.142857
+1  Flying Bisons sp. z o.o.         8000.000000
+2         Lufthansa Systems         9500.000000
+3                      NASK        10352.941176
+4        Zone IT Sp. z o.o.        11000.000000}
+2023-09-07 11:34:55 [INFO] Executed in: 17.973886966705322s
+2023-09-07 11:34:55 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:38:28 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:38:28 [INFO] Question: What are top 5 cities that have the highest average max salary?
+2023-09-07 11:38:28 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:38:28 [INFO] Prompt ID: 2ba6acb3-d9ba-4155-9bd8-02157256a2af
+2023-09-07 11:38:47 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by city and calculate the average max salary
+    avg_max_salary_by_city = df.groupby('city')['max_salary'].mean().reset_index()
+    
+    # Sort by average max salary in descending order
+    avg_max_salary_by_city = avg_max_salary_by_city.sort_values('max_salary', ascending=False)
+    
+    # Get the top 5 cities with the highest average max salary
+    top_5_cities = avg_max_salary_by_city.head(5)
+    
+    # Format the result as a string
+    result_string = "The top 5 cities with the highest average max salary are:\n"
+    for index, row in top_5_cities.iterrows():
+        result_string += f"{row['city']}: {row['max_salary']}\n"
+    
+    # Return the result as a text
+    return {"type": "text", "value": result_string}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:38:47 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    avg_max_salary_by_city = df.groupby('city')['max_salary'].mean().reset_index()
+    avg_max_salary_by_city = avg_max_salary_by_city.sort_values('max_salary', ascending=False)
+    top_5_cities = avg_max_salary_by_city.head(5)
+    result_string = 'The top 5 cities with the highest average max salary are:\n'
+    for index, row in top_5_cities.iterrows():
+        result_string += f"{row['city']}: {row['max_salary']}\n"
+    return {'type': 'text', 'value': result_string}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:38:47 [INFO] Answer: {'type': 'text', 'value': 'The top 5 cities with the highest average max salary are:\nabroad: 29433.666666666668\nMasovian: 28800.0\nBiałystok, podlaskie: 26000.0\nPruszków, mazowieckie: 25600.0\nLublin, Lublin: 25066.666666666668\n'}
+2023-09-07 11:38:47 [INFO] Executed in: 18.57328987121582s
+2023-09-07 11:39:07 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:39:07 [INFO] Question: What are top 5 cities that have the highest average max salary and at least 5 offers?
+2023-09-07 11:39:07 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:39:07 [INFO] Prompt ID: 427b7d4e-126c-43f2-bb88-8032a3c729d3
+2023-09-07 11:39:26 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter the data to include only cities with at least 5 offers
+    filtered_df = df.groupby('city').filter(lambda x: len(x) >= 5)
+
+    # Calculate the average max salary for each city
+    avg_max_salary = filtered_df.groupby('city')['max_salary'].mean()
+
+    # Sort the cities by average max salary in descending order
+    sorted_cities = avg_max_salary.sort_values(ascending=False)
+
+    # Get the top 5 cities with the highest average max salary
+    top_cities = sorted_cities.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame({'City': top_cities.index, 'Average Max Salary': top_cities.values})
+
+    # Return the result as a dataframe
+    return {'type': 'dataframe', 'value': result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:39:26 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    filtered_df = df.groupby('city').filter(lambda x: len(x) >= 5)
+    avg_max_salary = filtered_df.groupby('city')['max_salary'].mean()
+    sorted_cities = avg_max_salary.sort_values(ascending=False)
+    top_cities = sorted_cities.head(5)
+    result_df = pd.DataFrame({'City': top_cities.index, 'Average Max Salary': top_cities.values})
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:39:26 [INFO] Answer: {'type': 'dataframe', 'value':                                       City  Average Max Salary
+0                                   abroad        29433.666667
+1                       Warszawa, Masovian        22873.093168
+2                    Kraków, Lesser Poland        22777.435897
+3  Zabierzów (pow. krakowski), małopolskie        21937.500000
+4                       Katowice, Silesian        21000.000000}
+2023-09-07 11:39:26 [INFO] Executed in: 19.006553888320923s
+2023-09-07 11:39:26 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:40:43 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:40:43 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 11:40:43 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:40:43 [INFO] Prompt ID: eec89c93-4696-45c7-b047-2086d9d5ec2f
+2023-09-07 11:40:59 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:40:59 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:40:59 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 11:40:59 [INFO] Executed in: 15.90354323387146s
+2023-09-07 11:40:59 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:42:08 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 11:42:08 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 11:42:08 [INFO] Running PandasAI with openai LLM...
+2023-09-07 11:42:08 [INFO] Prompt ID: ff241092-ce0c-4d89-96ad-ff1468980cba
+2023-09-07 11:42:27 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 11:42:27 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 11:42:27 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 11:42:27 [INFO] Executed in: 18.217756032943726s
+2023-09-07 11:42:27 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:13:32 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:13:32 [INFO] Question: What are top 5 employers that have the lowest average min salary and have at least 5 offers
+2023-09-07 12:13:32 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:13:32 [INFO] Prompt ID: fd6c555f-b180-4242-89bb-e624b70dd868
+2023-09-07 12:13:54 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter employers with at least 5 offers
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+
+    # Calculate the average min salary for each employer
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+
+    # Sort the employers by average min salary in ascending order
+    sorted_employers = avg_min_salary.sort_values()
+
+    # Get the top 5 employers with the lowest average min salary
+    top_5_employers = sorted_employers.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Min Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:13:54 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    filtered_df = df.groupby('employer').filter(lambda x: len(x) >= 5)
+    avg_min_salary = filtered_df.groupby('employer')['min_salary'].mean()
+    sorted_employers = avg_min_salary.sort_values()
+    top_5_employers = sorted_employers.head(5)
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Min Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:13:54 [INFO] Answer: {'type': 'dataframe', 'value':                    Employer  Average Min Salary
+0        Catalogic Software         7857.142857
+1  Flying Bisons sp. z o.o.         8000.000000
+2         Lufthansa Systems         9500.000000
+3                      NASK        10352.941176
+4        Zone IT Sp. z o.o.        11000.000000}
+2023-09-07 12:13:54 [INFO] Executed in: 21.564669847488403s
+2023-09-07 12:13:54 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:14:59 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:14:59 [INFO] Question: What is the best paying offer in Krakow?
+2023-09-07 12:14:59 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:14:59 [INFO] Prompt ID: 1b6977a0-0ae0-4160-b8e2-4e89baa344dd
+2023-09-07 12:15:19 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Filter the dataframe to include only offers in Krakow
+    df_krakow = dfs[0][dfs[0]['city'] == 'Krakow']
+    
+    # Sort the dataframe by max_salary in descending order
+    df_sorted = df_krakow.sort_values('max_salary', ascending=False)
+    
+    # Get the best paying offer in Krakow
+    best_paying_offer = df_sorted.iloc[0]
+    
+    # Prepare the output
+    output = {
+        "type": "text",
+        "value": f"The best paying offer in Krakow is {best_paying_offer['job_title']} at {best_paying_offer['employer']} with a maximum salary of {best_paying_offer['max_salary']} gross per month."
+    }
+    
+    return output
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:15:19 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df_krakow = dfs[0][dfs[0]['city'] == 'Krakow']
+    df_sorted = df_krakow.sort_values('max_salary', ascending=False)
+    best_paying_offer = df_sorted.iloc[0]
+    output = {'type': 'text', 'value': f"The best paying offer in Krakow is {best_paying_offer['job_title']} at {best_paying_offer['employer']} with a maximum salary of {best_paying_offer['max_salary']} gross per month."}
+    return output
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:15:19 [WARNING] Error of executing code
+2023-09-07 12:15:19 [WARNING] Failed to execute code with a correction framework [retry number: 1]
+2023-09-07 12:15:19 [INFO] Failed with error: single positional indexer is out-of-bounds. Retrying
+2023-09-07 12:15:43 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df_krakow = dfs[0][dfs[0]['city'] == 'Krakow']
+    if df_krakow.empty:
+        output = {'type': 'text', 'value': 'There are no offers in Krakow.'}
+        return output
+    df_sorted = df_krakow.sort_values('max_salary', ascending=False)
+    if df_sorted['max_salary'].isnull().all():
+        output = {'type': 'text', 'value': 'There are no offers with salary information in Krakow.'}
+        return output
+    best_paying_offer = df_sorted.iloc[0]
+    output = {'type': 'text', 'value': f"The best paying offer in Krakow is {best_paying_offer['job_title']} at {best_paying_offer['employer']} with a maximum salary of {best_paying_offer['max_salary']} gross per month."}
+    return output
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:15:43 [INFO] Answer: {'type': 'text', 'value': 'There are no offers in Krakow.'}
+2023-09-07 12:15:43 [INFO] Executed in: 43.946937084198s
+2023-09-07 12:16:16 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:16:16 [INFO] Question: What are top 5 offers  in Krakow having the highest max salary?
+2023-09-07 12:16:16 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:16:16 [INFO] Prompt ID: e184d053-d5f9-4030-9941-179cb7efec9b
+2023-09-07 12:16:35 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+    
+    # Filter data for Krakow and sort by max salary in descending order
+    krakow_df = df[df['city'] == 'Kraków']
+    sorted_df = krakow_df.sort_values(by='max_salary', ascending=False)
+    
+    # Select top 5 offers
+    top_5_offers = sorted_df.head(5)
+    
+    # Prepare output dataframe
+    output_df = top_5_offers[['job_title', 'employer', 'max_salary']]
+    
+    # Return output dataframe
+    return {"type": "dataframe", "value": output_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:16:35 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    krakow_df = df[df['city'] == 'Kraków']
+    sorted_df = krakow_df.sort_values(by='max_salary', ascending=False)
+    top_5_offers = sorted_df.head(5)
+    output_df = top_5_offers[['job_title', 'employer', 'max_salary']]
+    return {'type': 'dataframe', 'value': output_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:16:35 [INFO] Answer: {'type': 'dataframe', 'value': Empty DataFrame
+Columns: [job_title, employer, max_salary]
+Index: []}
+2023-09-07 12:16:35 [INFO] Executed in: 19.072437047958374s
+2023-09-07 12:16:35 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:17:01 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:17:01 [INFO] Question: What are top 5 job titles  in Krakow having the highest max salary?
+2023-09-07 12:17:01 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:17:01 [INFO] Prompt ID: e9c3d6d2-36c3-49c0-be68-9254de587709
+2023-09-07 12:17:07 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:17:07 [INFO] Question: What are top 5 job titles  in Krakow having the highest max salary?
+2023-09-07 12:17:07 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:17:07 [INFO] Prompt ID: e32d8970-06b8-43f5-9ccd-49a0c77aae3f
+2023-09-07 12:17:16 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:17:16 [INFO] Question: What are top 5 job titles  in Krakow having the highest max salary?
+2023-09-07 12:17:16 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:17:16 [INFO] Prompt ID: 7baff7fb-6c4a-4810-925a-31929f5be423
+2023-09-07 12:17:20 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter the data for Krakow and sort by max salary in descending order
+    krakow_jobs = df[df['city'] == 'Kraków'].sort_values('max_salary', ascending=False)
+
+    # Get the top 5 job titles with the highest max salary
+    top_5_jobs = krakow_jobs.head(5)['job_title']
+
+    # Return the result as text
+    result = {
+        "type": "text",
+        "value": f"The top 5 job titles in Krakow with the highest max salary are:\n{', '.join(top_5_jobs)}"
+    }
+    return result
+
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:17:20 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    krakow_jobs = df[df['city'] == 'Kraków'].sort_values('max_salary', ascending=False)
+    top_5_jobs = krakow_jobs.head(5)['job_title']
+    result = {'type': 'text', 'value': f"""The top 5 job titles in Krakow with the highest max salary are:
+{', '.join(top_5_jobs)}"""}
+    return result
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:17:20 [INFO] Answer: {'type': 'text', 'value': 'The top 5 job titles in Krakow with the highest max salary are:\n'}
+2023-09-07 12:17:20 [INFO] Executed in: 18.284926891326904s
+2023-09-07 12:22:42 [INFO] Question: What are top 5 job titles  in Krakow having the highest max salary?
+2023-09-07 12:22:42 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:22:42 [INFO] Prompt ID: bafa7f69-4df5-420f-b302-328ec0615f67
+2023-09-07 12:23:00 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Filter the data for Krakow
+    df_krakow = df[df['city'] == 'Kraków']
+
+    # Sort the data by max salary in descending order
+    df_sorted = df_krakow.sort_values(by='max_salary', ascending=False)
+
+    # Get the top 5 job titles with the highest max salary
+    top_5_job_titles = df_sorted['job_title'].head(5).tolist()
+
+    # Prepare the output
+    output = {
+        "type": "text",
+        "value": f"The top 5 job titles in Krakow with the highest max salary are: {', '.join(top_5_job_titles)}"
+    }
+
+    return output
+
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:23:00 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    df_krakow = df[df['city'] == 'Kraków']
+    df_sorted = df_krakow.sort_values(by='max_salary', ascending=False)
+    top_5_job_titles = df_sorted['job_title'].head(5).tolist()
+    output = {'type': 'text', 'value': f"The top 5 job titles in Krakow with the highest max salary are: {', '.join(top_5_job_titles)}"}
+    return output
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:23:00 [INFO] Answer: {'type': 'text', 'value': 'The top 5 job titles in Krakow with the highest max salary are: '}
+2023-09-07 12:23:00 [INFO] Executed in: 18.586740016937256s
+2023-09-07 12:23:19 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:23:19 [INFO] Question: What are top 5 job titles having the highest max salary?
+2023-09-07 12:23:19 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:23:19 [INFO] Prompt ID: d55d98b9-049e-403c-905f-e4a9d70d339c
+2023-09-07 12:23:38 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all dataframes into one
+    df = pd.concat(dfs)
+
+    # Group by job title and find the maximum salary
+    max_salary_by_job_title = df.groupby('job_title')['max_salary'].max()
+
+    # Sort the salaries in descending order and get the top 5 job titles
+    top_5_job_titles = max_salary_by_job_title.sort_values(ascending=False).head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Job Title', 'Max Salary']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:23:38 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    max_salary_by_job_title = df.groupby('job_title')['max_salary'].max()
+    top_5_job_titles = max_salary_by_job_title.sort_values(ascending=False).head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Max Salary']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:23:38 [INFO] Answer: {'type': 'dataframe', 'value':                                  Job Title  Max Salary
+0               Lead DevOps/MLOps Engineer       58400
+1                 D365 Functional Lead SCM       56000
+2     Digital Lead - Supply Chain Planning       47000
+3                  Pentester / Pentesterka       45000
+4  Business Solutions Senior Data Engineer       42000}
+2023-09-07 12:23:38 [INFO] Executed in: 19.483376264572144s
+2023-09-07 12:23:38 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:28:41 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:28:41 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 12:28:41 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:28:41 [INFO] Prompt ID: 7c9bff9b-9439-4639-974a-f23e150f9890
+2023-09-07 12:28:41 [INFO] Using cached response
+2023-09-07 12:28:41 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:28:41 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:28:41 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 12:28:41 [INFO] Executed in: 0.005312204360961914s
+2023-09-07 12:28:41 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:30:12 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:30:12 [INFO] Question: What is the average max salary for job titles containing 'Python'?
+2023-09-07 12:30:12 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:30:12 [INFO] Prompt ID: 4d8118cd-7fc2-42c9-976e-80950d901f16
+2023-09-07 12:30:27 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Filter the job titles containing 'Python'
+    python_jobs = dfs[0][dfs[0]['job_title'].str.contains('Python', case=False)]
+    
+    # Calculate the average max salary
+    avg_max_salary = python_jobs['max_salary'].mean()
+    
+    # Return the result
+    return {"type": "number", "value": avg_max_salary}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:30:27 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    python_jobs = dfs[0][dfs[0]['job_title'].str.contains('Python', case=False)]
+    avg_max_salary = python_jobs['max_salary'].mean()
+    return {'type': 'number', 'value': avg_max_salary}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:30:27 [INFO] Answer: {'type': 'number', 'value': 22096.25}
+2023-09-07 12:30:27 [INFO] Executed in: 14.487948179244995s
+2023-09-07 12:36:01 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 12:36:01 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 12:36:01 [INFO] Running PandasAI with openai LLM...
+2023-09-07 12:36:01 [INFO] Prompt ID: 410dac63-55d2-4f23-b675-d085aa7ac689
+2023-09-07 12:36:01 [INFO] Using cached response
+2023-09-07 12:36:01 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 12:36:01 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 12:36:01 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 12:36:01 [INFO] Executed in: 0.004488945007324219s
+2023-09-07 12:36:01 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 19:26:49 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 19:26:49 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 19:26:49 [INFO] Running PandasAI with openai LLM...
+2023-09-07 19:26:49 [INFO] Prompt ID: 55ccef4b-f363-4065-a22e-b9bcb037f082
+2023-09-07 19:26:49 [INFO] Using cached response
+2023-09-07 19:26:49 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 19:26:49 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 19:26:49 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 19:26:49 [INFO] Executed in: 0.013128995895385742s
+2023-09-07 19:26:49 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 19:52:48 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 19:52:48 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 19:52:48 [INFO] Running PandasAI with openai LLM...
+2023-09-07 19:52:48 [INFO] Prompt ID: 1e5a442a-9697-4b99-a790-4879bac873e2
+2023-09-07 19:52:48 [INFO] Using cached response
+2023-09-07 19:52:48 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 19:52:48 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 19:52:48 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 19:52:48 [INFO] Executed in: 0.03280997276306152s
+2023-09-07 19:52:48 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 19:52:49 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 19:52:49 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 19:52:49 [INFO] Running PandasAI with openai LLM...
+2023-09-07 19:52:49 [INFO] Prompt ID: 8d82df54-63ba-4a91-9ac7-0742487c0a8c
+2023-09-07 19:52:49 [INFO] Using cached response
+2023-09-07 19:52:49 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 19:52:49 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 19:52:49 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 19:52:49 [INFO] Executed in: 0.0035576820373535156s
+2023-09-07 19:52:49 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:10 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:10 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 20:07:10 [INFO] Running PandasAI with openai LLM...
+2023-09-07 20:07:10 [INFO] Prompt ID: 0150b4e3-a146-4abd-b7bc-13f074f4035c
+2023-09-07 20:07:10 [INFO] Using cached response
+2023-09-07 20:07:10 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 20:07:10 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 20:07:10 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 20:07:10 [INFO] Executed in: 0.012881994247436523s
+2023-09-07 20:07:10 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:12 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:12 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 20:07:12 [INFO] Running PandasAI with openai LLM...
+2023-09-07 20:07:12 [INFO] Prompt ID: fd4bb09d-f736-4c34-8863-77f3ec69ef9c
+2023-09-07 20:07:12 [INFO] Using cached response
+2023-09-07 20:07:12 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 20:07:12 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 20:07:12 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 20:07:12 [INFO] Executed in: 0.004378080368041992s
+2023-09-07 20:07:12 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:13 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:13 [INFO] Question: What are top 5 most popular Job Titles?
+2023-09-07 20:07:13 [INFO] Running PandasAI with openai LLM...
+2023-09-07 20:07:13 [INFO] Prompt ID: c477c410-e235-4dc0-9d49-267c9a754ee2
+2023-09-07 20:07:13 [INFO] Using cached response
+2023-09-07 20:07:13 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+    
+    # Group by job title and count the occurrences
+    job_title_counts = df['job_title'].value_counts()
+    
+    # Get the top 5 most popular job titles
+    top_5_job_titles = job_title_counts.head(5)
+    
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 20:07:13 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    job_title_counts = df['job_title'].value_counts()
+    top_5_job_titles = job_title_counts.head(5)
+    result_df = pd.DataFrame(top_5_job_titles).reset_index()
+    result_df.columns = ['Job Title', 'Count']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 20:07:13 [INFO] Answer: {'type': 'dataframe', 'value':                Job Title  Count
+0         Java Developer     19
+1  Senior Java Developer     17
+2        DevOps Engineer     14
+3          PHP Developer     12
+4         .NET Developer      8}
+2023-09-07 20:07:13 [INFO] Executed in: 0.003679990768432617s
+2023-09-07 20:07:13 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:17 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
+2023-09-07 20:07:17 [INFO] Question: What are top 5 employers that have the highest average days to expiration?
+2023-09-07 20:07:17 [INFO] Running PandasAI with openai LLM...
+2023-09-07 20:07:17 [INFO] Prompt ID: 018605d3-e7ec-47d1-842a-1e151648cc5f
+2023-09-07 20:07:28 [INFO] 
+                    Code generated:
+                    ```
+                    # TODO import all the dependencies required
+import pandas as pd
+
+# Analyze the data
+# 1. Prepare: Preprocessing and cleaning data if necessary
+# 2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.)
+# 3. Analyze: Conducting the actual analysis (if the user asks to create a chart save it to an image in exports/charts/temp_chart.png and do not show the chart.)
+# 4. Output: return a dictionary of:
+# - type (possible values "text", "number", "dataframe", "plot")
+# - value (can be a string, a dataframe or the path of the plot, NOT a dictionary)
+# Example output: { "type": "text", "value": "The average loan amount is $15,000." }
+def analyze_data(dfs: list[pd.DataFrame]) -> dict:
+    # Combine all the dataframes into one
+    df = pd.concat(dfs)
+
+    # Group by employer and calculate the average days to expiration
+    avg_days_to_expiration = df.groupby('employer')['days_to_expiration'].mean()
+
+    # Sort the employers based on the average days to expiration in descending order
+    sorted_employers = avg_days_to_expiration.sort_values(ascending=False)
+
+    # Get the top 5 employers with the highest average days to expiration
+    top_5_employers = sorted_employers.head(5)
+
+    # Convert the result to a dataframe
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+
+    # Rename the columns
+    result_df.columns = ['Employer', 'Average Days to Expiration']
+
+    # Return the result as a dataframe
+    return {"type": "dataframe", "value": result_df}
+
+# Declare a result variable
+result = analyze_data(dfs)
+                    ```
+                
+2023-09-07 20:07:28 [INFO] 
+Code running:
+```
+def analyze_data(dfs: list[pd.DataFrame]) ->dict:
+    df = pd.concat(dfs)
+    avg_days_to_expiration = df.groupby('employer')['days_to_expiration'].mean()
+    sorted_employers = avg_days_to_expiration.sort_values(ascending=False)
+    top_5_employers = sorted_employers.head(5)
+    result_df = pd.DataFrame(top_5_employers).reset_index()
+    result_df.columns = ['Employer', 'Average Days to Expiration']
+    return {'type': 'dataframe', 'value': result_df}
+
+
+result = analyze_data(dfs)
+        ```
+2023-09-07 20:07:28 [INFO] Answer: {'type': 'dataframe', 'value':               Employer  Average Days to Expiration
+0     Firma Testowa PD                      268.00
+1     Locon Sp. z o.o.                       43.00
+2         InfoTiles AS                       40.00
+3             Lemon.io                       37.00
+4  SmartRecruiters INC                       32.75}
+2023-09-07 20:07:28 [INFO] Executed in: 10.201282024383545s
+2023-09-07 20:07:28 [ERROR] Could not load configuration
+Traceback (most recent call last):
+  File "/Users/szymon/PycharmProjects/it-job-market/venv/lib/python3.11/site-packages/pandasai/config.py", line 19, in load_config
+    with open(find_closest("pandasai.json"), "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/szymon/PycharmProjects/it-job-market/pandasai.json'
