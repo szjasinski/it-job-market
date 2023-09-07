@@ -17,7 +17,7 @@ output = ''
 if st.button('Get answer!'):
     if user_prompt:
         llm = OpenAI(api_token=st.secrets['MY_OPENAI_API_KEY'])
-        output = SmartDataframe(df, config={"llm": llm})
+        output = SmartDataframe(df, {"enable_cache": False}, config={"llm": llm})
         output = output.chat(user_prompt)
     else:
         st.write("Please ask a question :)")
