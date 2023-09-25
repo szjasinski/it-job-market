@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 # CLASS FOR SCRAPING PRACUJ.PL JOB OFFERS
-PRACUJ_PAGES_NUM = 90
+PRACUJ_PAGES_NUM = 94
 pracuj_urls_generator = ["https://it.pracuj.pl/praca?pn=" + str(i) for i in range(1, PRACUJ_PAGES_NUM + 1)]
 
 
@@ -38,8 +38,8 @@ class PracujSpider(CrawlSpider):
         if direct_address:
             item["address"] = direct_address
         else:
-            approximate_address = response.xpath('//div[@data-scroll-id="workplaces"]/div/p/text()').get()
-            item["address"] = approximate_address
+            general_address = response.xpath('//div[@data-scroll-id="workplaces"]/div/p/text()').get()
+            item["address"] = general_address
 
         # doesnt work -> logo is loaded after a short delay
         # logo_url = response.xpath('//img[@data-test="section-company-logo"]/@src').get()

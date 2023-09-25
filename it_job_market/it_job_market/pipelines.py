@@ -26,7 +26,7 @@ class CleanPricePipeline:
         adapter = ItemAdapter(item)
         for field in ["min_salary", "max_salary"]:
             val = str(adapter.get(field))
-            adapter[field] = val.replace('\xa0', '').replace(',00', '')
+            adapter[field] = val.replace('\xa0', '').replace(',00', '').replace(',', '.')
         return item
 
 
