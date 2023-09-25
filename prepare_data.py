@@ -4,11 +4,6 @@ from geopy.extra.rate_limiter import RateLimiter
 import pandas as pd
 from datetime import datetime
 
-"""
-This python file takes it-job-market.db file and calculates coordinates from address, then saves it as csv.
-Output of this process is ready to be read by the app.
-"""
-
 
 def get_data():
     cnx = sqlite3.connect('it-job-market.db')
@@ -44,7 +39,7 @@ def create_days_to_expirations(main_df):
 def create_middle_price(main_df):
     df = main_df.copy()
 
-    df['middle_price'] = (df['min_salary'] + df['max_salary']) / 2
+    df['middle_price'] = (df['min_salary'].astype(int) + df['max_salary'].astype(int)) / 2
     return df
 
 
@@ -65,6 +60,8 @@ def correct_wrong_min_salary(main_df):
             return row['min_salary'] * 160
         elif row['min_salary'] == 90:
             return row['min_salary'] * 160
+        elif row['min_salary'] == 150:
+            return row['min_salary'] * 160
         elif row['min_salary'] == 320000:
             return int(row['min_salary'] / 160)
         elif row['min_salary'] == 100 and row['employer'] == 'Cyclad':
@@ -84,6 +81,8 @@ def correct_wrong_max_salary(main_df):
             return row['max_salary'] * 160
         elif row['max_salary'] == 110:
             return row['max_salary'] * 160
+        elif row['max_salary'] == 200:
+            return row['max_salary'] * 160
         elif row['max_salary'] == 640000:
             return int(row['max_salary'] / 160)
         else:
@@ -93,12 +92,22 @@ def correct_wrong_max_salary(main_df):
     return df
 
 
+def correct_data_types(main_df):
+    df = main_df.copy()
+
+    df['min_salary'] = df['min_salary'].astype(int)
+    return df
+
+
 df = get_data()
-df = (df
+# df = pd.read_csv('it-job-market-ready.csv')
+
+
+df = (df.pipe(correct_wrong_max_salary)
       .pipe(correct_wrong_min_salary)
-      .pipe(correct_wrong_max_salary)
       .pipe(make_clickable_job_title)
       .pipe(create_days_to_expirations)
+      .pipe(correct_data_types)
       .pipe(create_middle_price)
       )
 
