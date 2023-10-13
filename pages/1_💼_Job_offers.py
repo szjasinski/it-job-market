@@ -11,8 +11,26 @@ from functions_module.filtering_functions import filter_salary_range
 from functions_module.display_table_function import write_data_table
 
 
+@st.cache_data
+def create_days_to_expirations(main_df, current_date):
+    df = main_df.copy()
+
+    def get_days(x):
+        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
+        delta = datetime_object - current_date
+        return int(delta.days)
+
+    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
+    df.drop(['expiration_date'], axis=1, inplace=True)
+    return df
+
+
+current_date = datetime.now().date()
+
 # GETTING DATA
 df = pd.read_csv('it-job-market-ready.csv')
+
+df = create_days_to_expirations(df, current_date)
 
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")

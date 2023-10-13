@@ -14,8 +14,25 @@ from functions_module.plot_functions import plot_days_to_expiration_histogram
 from functions_module.plot_functions import plot_words_in_job_title_barplot
 
 
+@st.cache_data
+def create_days_to_expirations(main_df, current_date):
+    df = main_df.copy()
+
+    def get_days(x):
+        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
+        delta = datetime_object - current_date
+        return int(delta.days)
+
+    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
+    df.drop(['expiration_date'], axis=1, inplace=True)
+    return df
+
+
 # GETTING DATA
 df = pd.read_csv('it-job-market-ready.csv')
+current_date = datetime.now().date()
+df = create_days_to_expirations(df, current_date)
+
 visible_offers_num = len(df)
 offers_num = len(df)
 string_dates_list = df['scraping_datetime'].tolist()

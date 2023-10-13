@@ -2,7 +2,6 @@ import sqlite3
 from geopy import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 import pandas as pd
-from datetime import datetime
 
 
 def get_data():
@@ -20,19 +19,6 @@ def create_coordinates(main_df):
     df['location'] = df['address'].apply(lambda x: geocode(x) if x not in [None, "None"] else None)
     df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else (None, None, None))
     df[['latitude', 'longitude', 'altitude']] = pd.DataFrame(df['point'].tolist(), index=df.index)
-    return df
-
-
-def create_days_to_expirations(main_df):
-    df = main_df.copy()
-
-    def get_days(x):
-        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
-        delta = datetime_object - datetime.now().date()
-        return int(delta.days)
-
-    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
-    df.drop(['expiration_date'], axis=1, inplace=True)
     return df
 
 
@@ -106,7 +92,6 @@ df = get_data()
 df = (df.pipe(correct_wrong_max_salary)
       .pipe(correct_wrong_min_salary)
       .pipe(make_clickable_job_title)
-      .pipe(create_days_to_expirations)
       .pipe(correct_data_types)
       .pipe(create_middle_price)
       )
