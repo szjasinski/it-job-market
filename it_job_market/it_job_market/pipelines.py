@@ -122,6 +122,7 @@ class CleanDatePipeline:
         return item
 
 
+# columns not up to date / pipeline not being used
 class SqlitePipeline:
 
     def __init__(self):

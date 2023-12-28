@@ -6,7 +6,7 @@ import streamlit as st
 
 st.title('Query the dataset using large language model')
 
-df = pd.read_csv('it-job-market-ready.csv')
+df = pd.read_csv('it-job-market-data.csv')
 
 user_prompt = st.text_input('Enter you query here: (see examples below)')
 st.caption("What is the average max salary for job titles containing 'Python'?")

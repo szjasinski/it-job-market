@@ -15,12 +15,12 @@ from functions_module.plot_functions import plot_words_in_job_title_barplot
 
 
 @st.cache_data
-def create_days_to_expirations(main_df, current_date):
+def create_days_to_expirations(main_df):
     df = main_df.copy()
 
     def get_days(x):
         datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
-        delta = datetime_object - current_date
+        delta = datetime_object - datetime.now().date()
         return int(delta.days)
 
     df['days_to_expiration'] = df['expiration_date'].apply(get_days)
@@ -28,10 +28,16 @@ def create_days_to_expirations(main_df, current_date):
     return df
 
 
+def get_data():
+    df = pd.read_csv('it-job-market-data.csv')
+    df.replace('None', pd.NA, inplace=True)
+    df = df.astype({'max_salary': 'Int64', 'min_salary': 'Int64'})
+    return df
+
+
 # GETTING DATA
-df = pd.read_csv('it-job-market-ready.csv')
-current_date = datetime.now().date()
-df = create_days_to_expirations(df, current_date)
+df = get_data()
+df = create_days_to_expirations(df)
 
 visible_offers_num = len(df)
 offers_num = len(df)
@@ -47,9 +53,10 @@ st.title('Plots and data summaries')
 st.write("Data was scraped from pracuj.pl between:", min(datetime_dates_list), " and ", max(datetime_dates_list))
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
 st.subheader("Average salary information")
-st.write("Average salary is calculated for each job offer as an average of max and min salary")
-st.write("Median of average salary:", int(df[['middle_price']].median()))
-st.write("Standard deviation of average salary:", int(df[['middle_price']].std()))
+
+st.write("Median of min salary:", int(df['min_salary'].median()))
+st.write("Median of max salary:", int(df['max_salary'].median()))
+# st.write("Standard deviation of average salary:", int(df[['middle_price']].std()))
 
 col1, col2 = st.columns(2)
 with col1:
@@ -63,12 +70,12 @@ with col2:
     st.subheader('Top 5 job titles with the lowest min salary')
     write_offers_with_the_lowest_min_salary_df(df)
     st.subheader('Top 5 employers by average salary')
-    write_top_employers_by_average_price_df(df)
+    # write_top_employers_by_average_price_df(df)
     st.subheader('Contract type')
     plot_contract_type_pie_chart(df)
 
 st.subheader('Average salary')
-plot_average_price_histogram(df)
+# plot_average_price_histogram(df)
 st.subheader('Most popular words in Job Title')
 plot_words_in_job_title_barplot(df)
 st.subheader('Localizations of employers headquarters')

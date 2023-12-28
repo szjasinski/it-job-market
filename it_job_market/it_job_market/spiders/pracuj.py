@@ -61,7 +61,6 @@ class PracujSpider(CrawlSpider):
         item["source"] = "pracuj.pl"
         item["scraping_datetime"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-
         direct_address = response.xpath('//div[@data-scroll-id="workplaces"]/div/a/text()').get()
         if direct_address:
             item["address"] = direct_address

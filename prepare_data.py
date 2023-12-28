@@ -4,12 +4,18 @@ from geopy.extra.rate_limiter import RateLimiter
 import pandas as pd
 
 
-def get_data():
-    cnx = sqlite3.connect('it-job-market.db')
-    df = pd.read_sql_query("SELECT * FROM offers", cnx)
-    cnx.commit()
-    cnx.close()
-    return df
+# sql db not being used at the moment
+# def get_data():
+#     cnx = sqlite3.connect('it-job-market.db')
+#     df = pd.read_sql_query("SELECT * FROM offers", cnx, dtype=
+#     {'job_title': 'object', 'employer': 'object', 'min_salary': 'int64', 'max_salary': 'int64', 'price_unit': 'int64',
+#      'url': 'object', 'contract_type': ' object', 'address': 'object', 'city': 'object',
+#      'expiration_date': 'object', 'scraping_datetime': 'object'})
+#     cnx.commit()
+#     cnx.close()
+#     print(df.info(verbose=True))
+#     print(df.dtypes)
+#     return df
 
 
 def create_coordinates(main_df):
@@ -19,13 +25,6 @@ def create_coordinates(main_df):
     df['location'] = df['address'].apply(lambda x: geocode(x) if x not in [None, "None"] else None)
     df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else (None, None, None))
     df[['latitude', 'longitude', 'altitude']] = pd.DataFrame(df['point'].tolist(), index=df.index)
-    return df
-
-
-def create_middle_price(main_df):
-    df = main_df.copy()
-
-    df['middle_price'] = (df['min_salary'].astype(int) + df['max_salary'].astype(int)) / 2
     return df
 
 
@@ -85,17 +84,16 @@ def correct_data_types(main_df):
     return df
 
 
-df = get_data()
-# df = pd.read_csv('it-job-market-ready.csv')
+df = pd.read_csv("scraped_data.csv")
 
 
-df = (df.pipe(correct_wrong_max_salary)
-      .pipe(correct_wrong_min_salary)
-      .pipe(make_clickable_job_title)
-      .pipe(correct_data_types)
-      .pipe(create_middle_price)
-      )
+# df = (df.pipe(correct_wrong_max_salary)
+#       .pipe(correct_wrong_min_salary)
+#       .pipe(make_clickable_job_title)
+#       .pipe(correct_data_types)
+#       )
 
-df = df.pipe(create_coordinates)
+df = df.pipe(make_clickable_job_title)
+# df = df.pipe(create_coordinates)
 
-df.to_csv('it-job-market-ready.csv', index=False)
+df.to_csv('it-job-market-data.csv', index=False)

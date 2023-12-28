@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+import numpy as np
 
 from functions_module.filtering_functions import sort_df
 from functions_module.filtering_functions import filter_job_title
@@ -12,12 +13,12 @@ from functions_module.display_table_function import write_data_table
 
 
 @st.cache_data
-def create_days_to_expirations(main_df, current_date):
+def create_days_to_expirations(main_df):
     df = main_df.copy()
 
     def get_days(x):
         datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
-        delta = datetime_object - current_date
+        delta = datetime_object - datetime.now().date()
         return int(delta.days)
 
     df['days_to_expiration'] = df['expiration_date'].apply(get_days)
@@ -25,18 +26,24 @@ def create_days_to_expirations(main_df, current_date):
     return df
 
 
-current_date = datetime.now().date()
+def get_data():
+    df = pd.read_csv('it-job-market-data.csv')
+    df.replace('None', pd.NA, inplace=True)
+    df = df.astype({'max_salary': 'Int64', 'min_salary': 'Int64'})
+    return df
+
 
 # GETTING DATA
-df = pd.read_csv('it-job-market-ready.csv')
+df = get_data()
 
-df = create_days_to_expirations(df, current_date)
+df = create_days_to_expirations(df)
 
 # -------- SIDEBAR MENU --------
 st.sidebar.title("Options")
 
-min_salary = df['min_salary'].min()
-max_salary = df['max_salary'].max()
+min_salary = df.loc[:, 'min_salary'].dropna().min()
+max_salary = df.loc[:, 'max_salary'].dropna().max()
+
 selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)',
                                           min_salary, max_salary, (min_salary, max_salary))
 
@@ -46,7 +53,8 @@ selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
 selected_company_name_keywords = st.sidebar.text_input('Company name contains:')
 selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
 
-df_to_export = df.drop(['point'], axis=1)
+# df_to_export = df.drop(['point'], axis=1)
+df_to_export = df
 st.sidebar.download_button(
     label="Download raw data as CSV",
     data=df_to_export.to_csv().encode('utf-8'),
