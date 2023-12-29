@@ -96,3 +96,47 @@ def plot_words_in_job_title_barplot(main_df):
     fig = plt.figure(figsize=(12, 5))
     sns.barplot(data=words_to_plot, x="Word", y="Count")
     st.pyplot(fig)
+
+
+def plot_expected_technologies_barplot(main_df):
+    df = main_df.copy()
+    df["expected_technologies"] = df["expected_technologies"].apply(eval)
+    data = df["expected_technologies"].explode().value_counts().head(20)
+    data_df = data.reset_index()
+    data_df.columns = ["expected_technology", "frequency"]
+    fig = plt.figure(figsize=(7, 7))
+    sns.barplot(data=data_df, y='expected_technology', x='frequency', orient="h")
+    st.pyplot(fig)
+
+
+def plot_optional_technologies_barplot(main_df):
+    df = main_df.copy()
+    df["optional_technologies"] = df["optional_technologies"].apply(eval)
+    data = df["optional_technologies"].explode().value_counts().tail(-1).head(20)
+    data_df = data.reset_index()
+    data_df.columns = ["optional_technology", "frequency"]
+    fig = plt.figure(figsize=(7, 7))
+    sns.barplot(data=data_df, y='optional_technology', x='frequency', orient="h")
+    st.pyplot(fig)
+
+
+def plot_benefits_barplot(main_df):
+    df = main_df.copy()
+    df["benefits"] = df["benefits"].apply(eval)
+    data = df["benefits"].explode().value_counts().tail(-1).head(20)
+    data_df = data.reset_index()
+    data_df.columns = ["benefits", "frequency"]
+    fig = plt.figure(figsize=(7, 7))
+    sns.barplot(data=data_df, y='benefits', x='frequency', orient="h")
+    st.pyplot(fig)
+
+
+def plot_specialization_barplot(main_df):
+    df = main_df.copy()
+    data = df[["specialization", "url"]].groupby(by=["specialization"], dropna=False).count().sort_values(by=['url'],
+                                                                                                          ascending=False)
+    data = data.reset_index().head(20)
+    data.columns = ["specialization", "frequency"]
+    fig = plt.figure(figsize=(5, 7))
+    sns.barplot(data=data, y='specialization', x='frequency', orient="h")
+    st.pyplot(fig)
