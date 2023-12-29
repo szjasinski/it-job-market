@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-def write_data_table(main_df):
+def display_offers(main_df):
     table = main_df.copy()
     table.drop(['price_unit', 'url', 'job_title', 'address', 'city'], axis=1, inplace=True)
     table = table.reindex(columns=['clickable_job_title', 'employer', 'min_salary', 'max_salary', 'contract_type', 'days_to_expiration'])

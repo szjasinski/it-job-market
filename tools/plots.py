@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 
-def plot_min_salary_histogram(main_df):
+def plot_min_salary(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
@@ -14,7 +14,7 @@ def plot_min_salary_histogram(main_df):
     st.pyplot(fig)
 
 
-def plot_max_salary_histogram(main_df):
+def plot_max_salary(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
@@ -22,7 +22,7 @@ def plot_max_salary_histogram(main_df):
     st.pyplot(fig)
 
 
-def plot_days_to_expiration_histogram(main_df):
+def plot_days_to_expiration(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 7))
     plt.xlim(-1, 60)
@@ -31,7 +31,7 @@ def plot_days_to_expiration_histogram(main_df):
     st.pyplot(fig)
 
 
-def plot_contract_type_pie_chart(main_df):
+def plot_contract_type(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     df = df[['contract_type', 'employer']].groupby('contract_type', as_index=False).count()
@@ -63,7 +63,7 @@ def plot_pydeck_map(main_df):
                          get_radius=20000, )]))
 
 
-def plot_words_in_job_title_barplot(main_df):
+def plot_words_in_job_title(main_df):
     df = main_df.copy()
 
     def custom_replace(x):
@@ -98,7 +98,7 @@ def plot_words_in_job_title_barplot(main_df):
     st.pyplot(fig)
 
 
-def plot_expected_technologies_barplot(main_df):
+def plot_expected_technologies(main_df):
     df = main_df.copy()
     df["expected_technologies"] = df["expected_technologies"].apply(eval)
     data = df["expected_technologies"].explode().value_counts().head(20)
@@ -109,7 +109,7 @@ def plot_expected_technologies_barplot(main_df):
     st.pyplot(fig)
 
 
-def plot_optional_technologies_barplot(main_df):
+def plot_optional_technologies(main_df):
     df = main_df.copy()
     df["optional_technologies"] = df["optional_technologies"].apply(eval)
     data = df["optional_technologies"].explode().value_counts().tail(-1).head(20)
@@ -120,7 +120,7 @@ def plot_optional_technologies_barplot(main_df):
     st.pyplot(fig)
 
 
-def plot_benefits_barplot(main_df):
+def plot_benefits(main_df):
     df = main_df.copy()
     df["benefits"] = df["benefits"].apply(eval)
     data = df["benefits"].explode().value_counts().tail(-1).head(20)
@@ -131,7 +131,7 @@ def plot_benefits_barplot(main_df):
     st.pyplot(fig)
 
 
-def plot_specialization_barplot(main_df):
+def plot_specializations(main_df):
     df = main_df.copy()
     data = df[["specialization", "url"]].groupby(by=["specialization"], dropna=False).count().sort_values(by=['url'],
                                                                                                           ascending=False)

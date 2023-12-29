@@ -3,37 +3,20 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 
-from functions_module.filtering_functions import sort_df
-from functions_module.filtering_functions import filter_job_title
-from functions_module.filtering_functions import filter_company_name
-from functions_module.filtering_functions import filter_contract_type
-from functions_module.filtering_functions import filter_salary_range
+from tools.filters import sort_df
+from tools.filters import filter_job_title
+from tools.filters import filter_company_name
+from tools.filters import filter_contract_type
+from tools.filters import filter_salary_range
 
-from functions_module.display_table_function import write_data_table
+from tools.display_offers import display_offers
 
+from tools.get_data import get_data
 
-@st.cache_data
-def create_days_to_expirations(main_df):
-    df = main_df.copy()
-
-    def get_days(x):
-        datetime_object = datetime.strptime(x, '%d-%m-%Y').date()
-        delta = datetime_object - datetime.now().date()
-        return int(delta.days)
-
-    df['days_to_expiration'] = df['expiration_date'].apply(get_days)
-    df.drop(['expiration_date'], axis=1, inplace=True)
-    return df
+from tools.data_manipulation import create_days_to_expirations
 
 
-def get_data():
-    df = pd.read_csv('it-job-market-data.csv')
-    df.replace('None', pd.NA, inplace=True)
-    df = df.astype({'max_salary': 'Int64', 'min_salary': 'Int64'})
-    return df
-
-
-# GETTING DATA
+# PREPARING DATA
 df = get_data()
 df = create_days_to_expirations(df)
 
@@ -79,9 +62,9 @@ start_scraping_datetime = min(datetime_dates_list)
 end_scraping_datetime = max(datetime_dates_list)
 
 # DISPLAY ON MAIN PAGE
-st.title('IT job offers with salary brackets from pracuj.pl')
+st.title('IT job offers with salary brackets')
 st.write("Data was scraped from pracuj.pl between:", start_scraping_datetime, " and ", end_scraping_datetime)
 st.write("Number of offers:", visible_offers_num, " out of ", all_offers_num)
-st.write("All salary values are in PLN/month gross")
-write_data_table(df_to_display)
+st.write("All salary values are in PLN/month gross.", "Displaying offers with salary only.")
+display_offers(df_to_display)
 st.caption('Created by Szymon Jasinski')
