@@ -25,11 +25,12 @@ def write_offers_with_the_lowest_min_salary_df(main_df):
     st.write(df)
 
 
-def write_top_employers_by_average_price_df(main_df):
+def write_top_employers_by_average_max_salary_df(main_df):
     df = main_df.copy()
-    df.rename(columns={'middle_price': 'Average Price', 'min_salary': 'Min Salary', 'employer': 'Employer'}, inplace=True)
-    df = df[['Average Price', 'Employer']].groupby('Employer', as_index=False).mean()
-    df = df.reindex(columns=['Average Price', 'Employer'])
-    df = df.nlargest(5, 'Average Price')
-    df['Average Price'] = df['Average Price'].apply(lambda x: round(x, 0))
-    st.write(df.set_index('Average Price'))
+    df.rename(columns={'max_salary': 'Max Salary', 'employer': 'Employer'}, inplace=True)
+    df = df[['Max Salary', 'Employer']].groupby('Employer', as_index=False).mean()
+    df = df.reindex(columns=['Max Salary', 'Employer'])
+    df = df.nlargest(5, 'Max Salary')
+    df['Max Salary'] = df['Max Salary'].apply(lambda x: round(x, 0))
+    df.rename(columns={'Max Salary': 'Avg Max Salary'}, inplace=True)
+    st.write(df.set_index('Avg Max Salary'))

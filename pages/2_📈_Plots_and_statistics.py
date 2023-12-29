@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -5,10 +6,12 @@ from datetime import datetime
 from functions_module.summary_dfs import write_offers_with_the_lowest_min_salary_df
 from functions_module.summary_dfs import write_offers_with_the_highest_max_salary_df
 from functions_module.summary_dfs import write_employers_with_most_offers_df
-from functions_module.summary_dfs import write_top_employers_by_average_price_df
+from functions_module.summary_dfs import write_top_employers_by_average_max_salary_df
+
 
 from functions_module.plot_functions import plot_pydeck_map
-from functions_module.plot_functions import plot_average_price_histogram
+from functions_module.plot_functions import plot_min_salary_histogram
+from functions_module.plot_functions import plot_max_salary_histogram
 from functions_module.plot_functions import plot_contract_type_pie_chart
 from functions_module.plot_functions import plot_days_to_expiration_histogram
 from functions_module.plot_functions import plot_words_in_job_title_barplot
@@ -54,31 +57,34 @@ st.write("Data was scraped from pracuj.pl between:", min(datetime_dates_list), "
 st.write("Number of offers:", visible_offers_num, " out of ", offers_num)
 st.subheader("Average salary information")
 
-st.write("Median of min salary:", int(df['min_salary'].median()))
-st.write("Median of max salary:", int(df['max_salary'].median()))
+st.write("Median of min salary:", int(df['min_salary'].median()), "PLN")
+st.write("Median of max salary:", int(df['max_salary'].median()), "PLN")
 # st.write("Standard deviation of average salary:", int(df[['middle_price']].std()))
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader('Top 5 job titles with the highest max salary')
-    write_offers_with_the_highest_max_salary_df(df)
+    # st.subheader('Top 5 job titles with the highest max salary')
+    # write_offers_with_the_highest_max_salary_df(df)
     st.subheader('Top 5 employers with the most offers')
     write_employers_with_most_offers_df(df)
     st.subheader('Days to expiration')
     plot_days_to_expiration_histogram(df)
 with col2:
-    st.subheader('Top 5 job titles with the lowest min salary')
-    write_offers_with_the_lowest_min_salary_df(df)
-    st.subheader('Top 5 employers by average salary')
-    # write_top_employers_by_average_price_df(df)
+    # st.subheader('Top 5 job titles with the lowest min salary')
+    # write_offers_with_the_lowest_min_salary_df(df)
+    st.subheader('Top 5 employers by average max salary')
+    write_top_employers_by_average_max_salary_df(df)
     st.subheader('Contract type')
     plot_contract_type_pie_chart(df)
 
-st.subheader('Average salary')
-# plot_average_price_histogram(df)
+st.subheader('Histogram of min salary')
+plot_min_salary_histogram(df)
+st.subheader('Histogram of max salary')
+plot_max_salary_histogram(df)
 st.subheader('Most popular words in Job Title')
 plot_words_in_job_title_barplot(df)
 st.subheader('Localizations of employers headquarters')
-plot_pydeck_map(df)
+# plot_pydeck_map(df)
+print('aaa')
 
 st.caption('Created by Szymon Jasinski')

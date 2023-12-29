@@ -3,14 +3,22 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pydeck as pdk
 import pandas as pd
+import numpy as np
 
 
-def plot_average_price_histogram(main_df):
+def plot_min_salary_histogram(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
-    df.rename(columns={'middle_price': 'Average Salary'}, inplace=True)
-    sns.histplot(data=df["Average Salary"], kde=True, bins=28, binrange=(0, 70000))
+    ax = sns.histplot(data=df[df["min_salary"].notna()]["min_salary"].astype(float), kde=True, bins=28, binrange=(0, 70000))
+    st.pyplot(fig)
+
+
+def plot_max_salary_histogram(main_df):
+    df = main_df.copy()
+    fig = plt.figure(figsize=(12, 5))
+    plt.xlim(-1000, 70000)
+    ax = sns.histplot(data=df[df["max_salary"].notna()]["max_salary"].astype(float), kde=True, bins=28, binrange=(0, 70000))
     st.pyplot(fig)
 
 

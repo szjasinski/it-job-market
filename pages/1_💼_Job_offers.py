@@ -35,7 +35,6 @@ def get_data():
 
 # GETTING DATA
 df = get_data()
-
 df = create_days_to_expirations(df)
 
 # -------- SIDEBAR MENU --------
@@ -75,8 +74,7 @@ df_to_display = (df.pipe(sort_df, selected_sort_by=selected_sort_by, selected_is
 all_offers_num = len(df)
 visible_offers_num = len(df_to_display)
 
-string_dates_list = df['scraping_datetime'].tolist()
-datetime_dates_list = [datetime.strptime(x, '%d/%m/%Y %H:%M:%S') for x in string_dates_list]
+datetime_dates_list = [datetime.strptime(x, '%d/%m/%Y %H:%M:%S') for x in df['scraping_datetime'].tolist()]
 start_scraping_datetime = min(datetime_dates_list)
 end_scraping_datetime = max(datetime_dates_list)
 
