@@ -31,7 +31,7 @@ selected_salary_range = st.sidebar.slider('Select salary range (PLN gross/month)
 
 selected_sort_by = st.sidebar.selectbox('Sort by:', ['Min Salary', 'Max Salary'])
 selected_is_descending = st.sidebar.checkbox('Descending')
-selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
+selected_job_title_keywords = st.sidebar.text_input('Position title contains:')
 selected_company_name_keywords = st.sidebar.text_input('Company name contains:')
 # selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
 
@@ -61,9 +61,11 @@ start_scraping_datetime = min(datetime_dates_list)
 end_scraping_datetime = max(datetime_dates_list)
 
 # DISPLAY ON MAIN PAGE
-st.title('IT job offers with salary brackets')
-st.write("Data was scraped from pracuj.pl between:", start_scraping_datetime, " and ", end_scraping_datetime)
-st.write("Number of offers:", visible_offers_num, " out of ", all_offers_num)
-st.write("All salary values are in PLN/month gross.", "Displaying offers with salary only.")
+st.title("IT Job Listings with Salary Ranges")
+st.write("The data was gathered by scraping pracuj.pl between the timestamps of :", start_scraping_datetime,
+         " and ", end_scraping_datetime)
+st.write("Showing ", visible_offers_num, " offers out of ", all_offers_num)
+st.write("All salary figures are presented in PLN/month gross. Only job offers with specified salary details are "
+         "displayed.")
 display_offers(df_to_display)
 st.caption('Created by Szymon Jasinski')
