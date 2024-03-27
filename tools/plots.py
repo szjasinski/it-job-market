@@ -11,6 +11,16 @@ def plot_min_salary(main_df):
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
     ax = sns.histplot(data=df[df["min_salary"].notna()]["min_salary"].astype(float), kde=True, bins=28, binrange=(0, 70000))
+
+    median = int(df['min_salary'].median())
+    mean = int(df['min_salary'].mean())
+    plt.axvline(median, color='k', linestyle='dashed', linewidth=1.3)
+    plt.axvline(mean, color='r', linestyle='dashed', linewidth=1.3)
+    min_ylim, max_ylim = plt.ylim()
+    plt.text(mean * 1.5, max_ylim * 0.9, 'Median: ' + str(median))
+    plt.text(mean * 1.5, max_ylim * 0.8, 'Mean: ' + str(mean))
+    plt.xlabel("Minimum Salary (PLN)")
+    ax.legend(['Density', 'Median', 'Mean'])
     st.pyplot(fig)
 
 
@@ -19,6 +29,16 @@ def plot_max_salary(main_df):
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
     ax = sns.histplot(data=df[df["max_salary"].notna()]["max_salary"].astype(float), kde=True, bins=28, binrange=(0, 70000))
+
+    median = int(df['max_salary'].median())
+    mean = int(df['max_salary'].mean())
+    plt.axvline(median, color='k', linestyle='dashed', linewidth=1.3)
+    plt.axvline(mean, color='r', linestyle='dashed', linewidth=1.3)
+    min_ylim, max_ylim = plt.ylim()
+    plt.text(mean * 1.5, max_ylim * 0.9, 'Median: ' + str(median))
+    plt.text(mean * 1.5, max_ylim * 0.8, 'Mean: ' + str(mean))
+    plt.xlabel("Maximum Salary (PLN)")
+    ax.legend(['Density', 'Median', 'Mean'])
     st.pyplot(fig)
 
 
@@ -28,6 +48,7 @@ def plot_days_to_expiration(main_df):
     plt.xlim(-1, 60)
     df.rename(columns={'days_to_expiration': 'Days to expiration'}, inplace=True)
     sns.histplot(data=df["Days to expiration"], kde=True, bins=20, binrange=(0, 100))
+    plt.xlabel("Days until Offer Expiration")
     st.pyplot(fig)
 
 
@@ -95,6 +116,7 @@ def plot_words_in_job_title(main_df):
 
     fig = plt.figure(figsize=(12, 5))
     sns.barplot(data=words_to_plot, x="Word", y="Count")
+    plt.xlabel("Keyword")
     st.pyplot(fig)
 
 
@@ -106,6 +128,8 @@ def plot_expected_technologies(main_df):
     data_df.columns = ["expected_technology", "frequency"]
     fig = plt.figure(figsize=(7, 7))
     sns.barplot(data=data_df, y='expected_technology', x='frequency', orient="h")
+    plt.ylabel("Expected Technology")
+    plt.xlabel("Frequency")
     st.pyplot(fig)
 
 
@@ -117,6 +141,8 @@ def plot_optional_technologies(main_df):
     data_df.columns = ["optional_technology", "frequency"]
     fig = plt.figure(figsize=(7, 7))
     sns.barplot(data=data_df, y='optional_technology', x='frequency', orient="h")
+    plt.ylabel("Optional Technology")
+    plt.xlabel("Frequency")
     st.pyplot(fig)
 
 
@@ -128,6 +154,8 @@ def plot_benefits(main_df):
     data_df.columns = ["benefits", "frequency"]
     fig = plt.figure(figsize=(7, 7))
     sns.barplot(data=data_df, y='benefits', x='frequency', orient="h")
+    plt.ylabel("Benefit")
+    plt.xlabel("Frequency")
     st.pyplot(fig)
 
 
@@ -139,4 +167,6 @@ def plot_specializations(main_df):
     data.columns = ["specialization", "frequency"]
     fig = plt.figure(figsize=(5, 7))
     sns.barplot(data=data, y='specialization', x='frequency', orient="h")
+    plt.ylabel("Specialization")
+    plt.xlabel("Frequency")
     st.pyplot(fig)
