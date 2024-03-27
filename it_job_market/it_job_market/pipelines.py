@@ -122,6 +122,65 @@ class CleanDatePipeline:
         return item
 
 
+class CleanBenefitsPipeline:
+
+    def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+        val = adapter.get('benefits')
+
+        benefits_dict = {'prywatna opieka medyczna': 'private medical care',
+                         'dofinansowanie zajęć sportowych': 'sharing the costs of sports activities',
+                         'spotkania integracyjne': 'integration events',
+                         'elastyczny czas pracy': 'flexible working time',
+                         'możliwość pracy zdalnej': 'remote work opportunities',
+                         'ubezpieczenie na życie': 'life insurance',
+                         'parking dla pracowników': 'parking space for employees',
+                         'kawa / herbata': 'coffee / tea',
+                         'owoce': 'fruits',
+                         'brak dress code’u': 'no dress code',
+                         'program rekomendacji pracowników': 'employee referral program',
+                         'dofinansowanie nauki języków': 'sharing the costs of foreign language classes',
+                         'inicjatywy dobroczynne': 'charity initiatives',
+                         'napoje': 'drinks',
+                         'paczki świąteczne': 'christmas gifts',
+                         'dofinansowanie szkoleń i kursów': 'sharing the costs of professional training & courses',
+                         'świętowanie urodzin': 'birthday celebration',
+                         'firmowa biblioteka': 'corporate library',
+                         'dodatkowe świadczenia socjalne': 'extra social benefits',
+                         'strefa relaksu': 'leisure zone',
+                         'program emerytalny': 'retirement pension plan',
+                         'siłownia w biurze': 'corporate gym',
+                         'zniżki na firmowe produkty i usługi': 'corporate products and services at discounted prices',
+                         'firmowa drużyna sportowa': 'corporate sports team',
+                         'pakiet relokacyjny': 'redeployment package',
+                         'opieka stomatologiczna': 'dental care',
+                         'gry wideo w pracy': 'video games at work',
+                         'dofinansowanie wypoczynku': 'holiday funds',
+                         'dofinansowanie biletów do kina, teatru': 'sharing the costs of tickets to the movies, theater',
+                         'dodatkowy urlop': 'extra leave',
+                         'wyprawka dla dziecka': 'baby layette',
+                         'karty przedpłacone': 'pre-paid cards',
+                         'służbowy telefon do użytku prywatnego': 'mobile phone available for private use',
+                         'dofinansowanie usług turystycznych': 'sharing the costs of tourist services',
+                         'komputer do użytku prywatnego': 'computer available for private use',
+                         'parking dla rowerów': 'bike parking',
+                         }
+
+        def swap(x):
+            if x in benefits_dict:
+                return benefits_dict[x]
+            else:
+                return x
+
+        new_benefits = []
+        for x in eval(val):
+            new_benefits.append(swap(x))
+
+        adapter['benefits'] = str(new_benefits)
+
+        return item
+
+
 # columns not up to date / pipeline not being used
 class SqlitePipeline:
 
