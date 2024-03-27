@@ -33,7 +33,7 @@ selected_sort_by = st.sidebar.selectbox('Sort by:', ['Min Salary', 'Max Salary']
 selected_is_descending = st.sidebar.checkbox('Descending')
 selected_job_title_keywords = st.sidebar.text_input('Job title contains:')
 selected_company_name_keywords = st.sidebar.text_input('Company name contains:')
-selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
+# selected_contract_type = st.sidebar.selectbox('Contract type:', ["All", "B2B", "employment", "mandate"])
 
 # df_to_export = df.drop(['point'], axis=1)
 df_to_export = df
@@ -49,7 +49,6 @@ st.sidebar.download_button(
 df_to_display = (df.pipe(sort_df, selected_sort_by=selected_sort_by, selected_is_descending=selected_is_descending)
                  .pipe(filter_job_title, selected_job_title_keywords=selected_job_title_keywords)
                  .pipe(filter_company_name, selected_company_name_keywords=selected_company_name_keywords)
-                 .pipe(filter_contract_type, selected_contract_type=selected_contract_type)
                  .pipe(filter_salary_range, selected_salary_range=selected_salary_range)
                  )
 
