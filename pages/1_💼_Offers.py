@@ -62,10 +62,9 @@ end_scraping_datetime = max(datetime_dates_list)
 
 # DISPLAY ON MAIN PAGE
 st.title("IT Job Listings with Salary Ranges")
-st.write("The data was gathered by scraping pracuj.pl between the timestamps of :", start_scraping_datetime,
+st.write("The data was gathered by scraping", all_offers_num, "job offers from pracuj.pl between the timestamps of :", start_scraping_datetime,
          " and ", end_scraping_datetime)
-st.write("Showing ", visible_offers_num, " offers out of ", all_offers_num)
-st.write("All salary figures are presented in PLN/month gross. Only job offers with specified salary details are "
-         "displayed.")
+st.write("Presenting solely the", visible_offers_num, "offers that contained salary details. All salary amounts were "
+                                                      "computed as gross PLN per month.")
 display_offers(df_to_display)
 st.caption('Created by Szymon Jasinski')
