@@ -8,6 +8,7 @@ import numpy as np
 
 def plot_min_salary(main_df):
     df = main_df.copy()
+    sns.set_theme()
     fig = plt.figure(figsize=(12, 5))
     plt.xlim(-1000, 70000)
     ax = sns.histplot(data=df[df["min_salary"].notna()]["min_salary"].astype(float), kde=True, bins=28, binrange=(0, 70000))
@@ -56,8 +57,7 @@ def plot_contract_type(main_df):
     df = main_df.copy()
     fig = plt.figure(figsize=(12, 5))
     df = df[['contract_type', 'employer']].groupby('contract_type', as_index=False).count()
-    palette_color = sns.color_palette('deep')
-    plt.pie(df['employer'], labels=df['contract_type'], colors=palette_color, autopct='%.0f%%')
+    plt.pie(df['employer'], labels=df['contract_type'], autopct='%.0f%%')
     st.pyplot(fig)
 
 
@@ -115,7 +115,7 @@ def plot_words_in_job_title(main_df):
     words_to_plot = df_filtered.iloc[:10, :]
 
     fig = plt.figure(figsize=(12, 5))
-    sns.barplot(data=words_to_plot, x="Word", y="Count")
+    sns.barplot(data=words_to_plot, x="Word", y="Count", palette="deep")
     plt.xlabel("Keyword")
     st.pyplot(fig)
 
@@ -127,7 +127,7 @@ def plot_expected_technologies(main_df):
     data_df = data.reset_index()
     data_df.columns = ["expected_technology", "frequency"]
     fig = plt.figure(figsize=(7, 7))
-    sns.barplot(data=data_df, y='expected_technology', x='frequency', orient="h")
+    sns.barplot(data=data_df, y='expected_technology', x='frequency', orient="h", palette="deep")
     plt.ylabel("Expected Technology")
     plt.xlabel("Frequency")
     st.pyplot(fig)
@@ -140,7 +140,7 @@ def plot_optional_technologies(main_df):
     data_df = data.reset_index()
     data_df.columns = ["optional_technology", "frequency"]
     fig = plt.figure(figsize=(7, 7))
-    sns.barplot(data=data_df, y='optional_technology', x='frequency', orient="h")
+    sns.barplot(data=data_df, y='optional_technology', x='frequency', orient="h", palette="deep")
     plt.ylabel("Optional Technology")
     plt.xlabel("Frequency")
     st.pyplot(fig)
@@ -153,7 +153,7 @@ def plot_benefits(main_df):
     data_df = data.reset_index()
     data_df.columns = ["benefits", "frequency"]
     fig = plt.figure(figsize=(7, 7))
-    sns.barplot(data=data_df, y='benefits', x='frequency', orient="h")
+    sns.barplot(data=data_df, y='benefits', x='frequency', orient="h", palette="deep")
     plt.ylabel("Benefit")
     plt.xlabel("Frequency")
     st.pyplot(fig)
@@ -166,7 +166,7 @@ def plot_specializations(main_df):
     data = data.reset_index().head(20)
     data.columns = ["specialization", "frequency"]
     fig = plt.figure(figsize=(5, 7))
-    sns.barplot(data=data, y='specialization', x='frequency', orient="h")
+    sns.barplot(data=data, y='specialization', x='frequency', orient="h", palette="deep")
     plt.ylabel("Specialization")
     plt.xlabel("Frequency")
     st.pyplot(fig)
