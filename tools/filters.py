@@ -57,3 +57,24 @@ def filter_salary_range(main_df, selected_salary_range):
     df = df.loc[(df['min_salary'] <= selected_salary_range[1]) &
                 (df['max_salary'] >= selected_salary_range[0]),]
     return df
+
+
+def filter_expected_technologies(main_df, selected_expected_technologies, any_offer_word):
+    df = main_df.copy()
+
+    def is_match(row):
+        if selected_expected_technologies == [any_offer_word]:
+            return 1
+
+        count = 0
+        for t in selected_expected_technologies:
+            if t in eval(row['expected_technologies']) and t != any_offer_word:
+                count += 1
+        if count == len(selected_expected_technologies) - 1:
+            return 1
+        else:
+            return 0
+
+    df['match'] = df[['expected_technologies']].apply(lambda x: is_match(x), axis=1)
+    df = df.loc[df['match'] == 1]
+    return df
