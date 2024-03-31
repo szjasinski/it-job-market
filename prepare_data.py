@@ -41,16 +41,12 @@ def correct_wrong_min_salary(main_df):
     df = main_df.copy()
 
     def correct_wrong_min_salary_row(row):
-        if row['min_salary'] == 24:
-            return row['min_salary'] * 160
+        if row['min_salary'] is pd.NA:
+            return row['min_salary']
         elif row['min_salary'] == 90:
             return row['min_salary'] * 160
-        elif row['min_salary'] == 150:
-            return row['min_salary'] * 160
-        elif row['min_salary'] == 320000:
-            return int(row['min_salary'] / 160)
-        elif row['min_salary'] == 100 and row['employer'] == 'Cyclad':
-            return 13000
+        elif row['min_salary'] == 2600 and row['employer'] == 'TeamQuest':
+            return row['min_salary'] * 10
         else:
             return row['min_salary']
 
@@ -62,14 +58,12 @@ def correct_wrong_max_salary(main_df):
     df = main_df.copy()
 
     def correct_wrong_max_salary_row(row):
-        if row['max_salary'] == 26:
+        if row['max_salary'] is pd.NA:
+            return row['max_salary']
+        elif row['max_salary'] == 125 and row['employer'] == 'Devire':
             return row['max_salary'] * 160
-        elif row['max_salary'] == 110:
-            return row['max_salary'] * 160
-        elif row['max_salary'] == 200:
-            return row['max_salary'] * 160
-        elif row['max_salary'] == 640000:
-            return int(row['max_salary'] / 160)
+        elif row['max_salary'] == 150000 and row['employer'] == 'BCF Software Sp. z o.o.':
+            return int(row['max_salary'] / 10)
         else:
             return row['max_salary']
 
@@ -77,23 +71,36 @@ def correct_wrong_max_salary(main_df):
     return df
 
 
-def correct_data_types(main_df):
+def drop_irrelevant_offers(main_df):
     df = main_df.copy()
+    employers_to_delete = ['Pasja - Mariusz Pośnik']
 
-    df['min_salary'] = df['min_salary'].astype(int)
+    for emp in employers_to_delete:
+        df = df[df['employer'] != emp]
+
     return df
 
 
-df = pd.read_csv("scraped_data.csv")
+def correct_data_types(main_df):
+    df = main_df.copy()
+    df.replace('None', pd.NA, inplace=True)
+    df['min_salary'] = pd.to_numeric(df['min_salary'], errors='coerce').round()
+    df['max_salary'] = pd.to_numeric(df['max_salary'], errors='coerce').round()
+    df = df.astype({'max_salary': 'Int64', 'min_salary': 'Int64'})
+    return df
 
 
-# df = (df.pipe(correct_wrong_max_salary)
-#       .pipe(correct_wrong_min_salary)
-#       .pipe(make_clickable_job_title)
-#       .pipe(correct_data_types)
-#       )
+df = pd.read_csv("raw_scraped_data.csv")
 
-df = df.pipe(make_clickable_job_title)
+
+df = (df.pipe(correct_data_types)
+      .pipe(correct_wrong_max_salary)
+      .pipe(correct_wrong_min_salary)
+      .pipe(make_clickable_job_title)
+      .pipe(drop_irrelevant_offers)
+      )
+
+# df = df.pipe(make_clickable_job_title)
 # df = df.pipe(create_coordinates)
 
-df.to_csv('it-job-market-data.csv', index=False)
+df.to_csv('data-ready.csv', index=False)
